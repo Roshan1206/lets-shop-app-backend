@@ -1,0 +1,18 @@
+package com.example.lets_shop_app.model;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class RegisterRequest {
+
+	private String firstname;
+	private String lastname;
+	private String email;
+	private String password;
+}
