@@ -2,7 +2,6 @@ package com.example.lets_shop_app.service;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 

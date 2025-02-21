@@ -2,7 +2,6 @@ package com.example.lets_shop_app.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -28,12 +27,8 @@ public class SecurityConfiguration {
 			.csrf(csrf -> csrf.disable())
 			.authorizeHttpRequests(req->
 						req
-							.requestMatchers("/products/**").permitAll()
-							.requestMatchers("/v3/**").permitAll()
-							.requestMatchers("/swagger-ui/**").permitAll()
-							.requestMatchers("/api/v1/**").permitAll()
-							.anyRequest()
-							.authenticated())
+							.requestMatchers("/products/**", "/v3/**", "/swagger-ui/**", "/api/v1/**").permitAll()
+							.anyRequest().authenticated())
 			.sessionManagement(session ->
 						session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.authenticationProvider(authenticationProvider)
