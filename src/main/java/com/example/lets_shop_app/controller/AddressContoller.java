@@ -21,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/address")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
 public class AddressContoller {
 
 	private final AddressService addressService;

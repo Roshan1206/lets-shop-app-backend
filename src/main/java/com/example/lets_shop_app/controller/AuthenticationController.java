@@ -1,9 +1,6 @@
 package com.example.lets_shop_app.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,8 +15,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:4200")
-@RequestMapping("/api/v1")
+@RequestMapping("/auth")
 public class AuthenticationController {
 
 	private final AuthenticationService authenticationService;
@@ -37,9 +33,5 @@ public class AuthenticationController {
 		return ResponseEntity.ok(
 				authenticationService.authenticateUser(authenticateRequest));
 	}
-	
-	@GetMapping("/hello")
-	public String hello() {
-		return "Hello";
-	}
+
 }

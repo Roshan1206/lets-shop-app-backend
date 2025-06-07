@@ -24,7 +24,7 @@ public class AuthenticationService {
 	private final PasswordEncoder passwordEncoder;
 	
 	public AuthenticationResponse registerUser(RegisterRequest registerRequest) {
-		var user = User.builder()
+		User user = User.builder()
 						.firstname(registerRequest.getFirstname())
 						.lastname(registerRequest.getLastname())
 						.email(registerRequest.getEmail())
@@ -44,8 +44,8 @@ public class AuthenticationService {
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authenticateRequest.getEmail(), authenticateRequest.getPassword()));
 		
-		var user = userRepository.findByEmail(authenticateRequest.getEmail()).orElseThrow();
-		var jwtToken = jwtService.genrateToken(user);
+		User user = userRepository.findByEmail(authenticateRequest.getEmail()).orElseThrow();
+		String jwtToken = jwtService.genrateToken(user);
 //		System.out.println(user);
 		
 		return AuthenticationResponse.builder()
