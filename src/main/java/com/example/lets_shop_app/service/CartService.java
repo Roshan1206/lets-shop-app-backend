@@ -11,8 +11,8 @@ import com.example.lets_shop_app.dao.CartRepository;
 import com.example.lets_shop_app.dao.ProductRepository;
 import com.example.lets_shop_app.entity.Cart;
 import com.example.lets_shop_app.entity.Product;
-import com.example.lets_shop_app.model.CartItemsResponse;
-import com.example.lets_shop_app.model.CartRequest;
+import com.example.lets_shop_app.dto.CartItemsResponse;
+import com.example.lets_shop_app.dto.CartRequest;
 
 import lombok.RequiredArgsConstructor;
 

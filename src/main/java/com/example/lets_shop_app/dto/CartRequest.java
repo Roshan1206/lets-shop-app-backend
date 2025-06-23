@@ -1,4 +1,4 @@
-package com.example.lets_shop_app.model;
+package com.example.lets_shop_app.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderCreateResponse {
+public class CartRequest {
 
-	private Long id;
+	public Long productId;
+	public Integer productQuantity;
 }

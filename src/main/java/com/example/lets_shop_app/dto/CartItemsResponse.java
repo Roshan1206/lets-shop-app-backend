@@ -1,4 +1,4 @@
-package com.example.lets_shop_app.model;
+package com.example.lets_shop_app.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,14 +7,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartResponse {
-
-	private Long id;
-	private Integer productId;
+public class CartItemsResponse {
+	
+	private Long productId;
 	private String productName;
-	private Double productPrice;
 	private String productThumbnail;
-	private Double totalProductPrice;
 	private Integer productQuantity;
+	private Double productPrice;
+	private Double totalProductPrice;
 	
 }

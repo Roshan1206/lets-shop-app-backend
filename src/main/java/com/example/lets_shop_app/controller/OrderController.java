@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.lets_shop_app.model.OrderCreateRequest;
-import com.example.lets_shop_app.model.OrderUserResponse;
+import com.example.lets_shop_app.dto.OrderCreateRequest;
+import com.example.lets_shop_app.dto.OrderUserResponse;
 import com.example.lets_shop_app.service.OrderService;
 
 import lombok.RequiredArgsConstructor;

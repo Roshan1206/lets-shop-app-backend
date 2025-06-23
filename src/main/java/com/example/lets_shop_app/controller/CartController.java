@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.lets_shop_app.entity.Cart;
-import com.example.lets_shop_app.model.CartItemsResponse;
-import com.example.lets_shop_app.model.CartRequest;
-import com.example.lets_shop_app.model.CartResponse;
+import com.example.lets_shop_app.dto.CartItemsResponse;
+import com.example.lets_shop_app.dto.CartRequest;
+import com.example.lets_shop_app.dto.CartResponse;
 import com.example.lets_shop_app.service.CartService;
 
 import lombok.RequiredArgsConstructor;

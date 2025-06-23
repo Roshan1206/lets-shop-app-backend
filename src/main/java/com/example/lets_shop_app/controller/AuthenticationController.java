@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.lets_shop_app.model.AuthenticateRequest;
-import com.example.lets_shop_app.model.AuthenticationResponse;
-import com.example.lets_shop_app.model.RegisterRequest;
+import com.example.lets_shop_app.dto.AuthenticateRequest;
+import com.example.lets_shop_app.dto.AuthenticationResponse;
+import com.example.lets_shop_app.dto.RegisterRequest;
 import com.example.lets_shop_app.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;

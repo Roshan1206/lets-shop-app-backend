@@ -1,6 +1,8 @@
 package com.example.lets_shop_app.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -48,6 +50,7 @@ public class SecurityConfiguration {
 						req
 								.requestMatchers(HttpMethod.GET, "/products/**", "/products", "/product-category", "/product-category/**").permitAll()
 								.requestMatchers("/v3/**", "/swagger-ui/**", "/auth/**", "/error").permitAll()
+								.requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
 								.anyRequest().authenticated())
 				.sessionManagement(session ->
 						session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

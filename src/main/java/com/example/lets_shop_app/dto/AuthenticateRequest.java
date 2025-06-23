@@ -1,4 +1,4 @@
-package com.example.lets_shop_app.model;
+package com.example.lets_shop_app.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import com.example.lets_shop_app.dao.UserRepository;
 import com.example.lets_shop_app.entity.User;
 import com.example.lets_shop_app.entity._enum.Role;
-import com.example.lets_shop_app.model.AuthenticateRequest;
-import com.example.lets_shop_app.model.AuthenticationResponse;
-import com.example.lets_shop_app.model.RegisterRequest;
+import com.example.lets_shop_app.dto.AuthenticateRequest;
+import com.example.lets_shop_app.dto.AuthenticationResponse;
+import com.example.lets_shop_app.dto.RegisterRequest;
 
 import lombok.RequiredArgsConstructor;
 

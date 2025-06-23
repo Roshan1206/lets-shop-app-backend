@@ -1,15 +1,14 @@
-package com.example.lets_shop_app.model;
+package com.example.lets_shop_app.dto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class AuthenticationResponse {
+public class OrderCreateRequest {
 
-	private String token;
+	private Long productId;
+	private Integer totalQuantity;
 }

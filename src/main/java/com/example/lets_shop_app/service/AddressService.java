@@ -9,7 +9,7 @@ import com.example.lets_shop_app.dao.CountryRepository;
 import com.example.lets_shop_app.dao.StateRepository;
 import com.example.lets_shop_app.entity.Country;
 import com.example.lets_shop_app.entity.State;
-import com.example.lets_shop_app.model.CountryResponse;
+import com.example.lets_shop_app.dto.CountryResponse;
 
 import lombok.RequiredArgsConstructor;
 
