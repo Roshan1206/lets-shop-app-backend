@@ -1,5 +1,6 @@
 package com.example.lets_shop_app.controller;
 
+import com.example.lets_shop_app.entity._enum.Role;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,12 +21,21 @@ public class AuthenticationController {
 
 	private final AuthenticationService authenticationService;
 	
-	@PostMapping("/register")
-	public ResponseEntity<AuthenticationResponse> register(
+	@PostMapping("/register/user")
+	public ResponseEntity<AuthenticationResponse> registerUser(
 			@RequestBody RegisterRequest registerRequest){
 		return ResponseEntity.ok(
-				authenticationService.registerUser(registerRequest));
+				authenticationService.registerUser(registerRequest, Role.USER));
 	}
+
+
+	@PostMapping("/register/seller")
+	public ResponseEntity<AuthenticationResponse> registerSeller(
+			@RequestBody RegisterRequest registerRequest){
+		return ResponseEntity.ok(
+				authenticationService.registerUser(registerRequest, Role.SELLER));
+	}
+
 	
 	@PostMapping("/login")
 	public ResponseEntity<AuthenticationResponse> authenticate(

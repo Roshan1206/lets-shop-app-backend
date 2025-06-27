@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +19,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-	private final static String SECRET_KEY = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
+	@Value("${secret.key}")
+	private String SECRET_KEY;// = "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970";
 	
 	private Key getSignInKey() {
 		byte[] keyByte = Decoders.BASE64.decode(SECRET_KEY);
@@ -54,7 +56,7 @@ public class JwtService {
 		return extractUsername(token).equals(userDetails.getUsername()) && !isTokenExpired(token);
 	}
 	
-	public String genrateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 		return Jwts.builder()
 					.addClaims(extraClaims)
 					.setSubject(userDetails.getUsername())
@@ -65,7 +67,7 @@ public class JwtService {
 					.compact();
 	}
 	
-	public String genrateToken(UserDetails userDetails) {
-		return genrateToken(new HashMap<>(), userDetails);
+	public String generateToken(UserDetails userDetails) {
+		return generateToken(new HashMap<>(), userDetails);
 	}
 }

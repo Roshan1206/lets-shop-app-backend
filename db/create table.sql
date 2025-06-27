@@ -62,6 +62,6 @@ create table cart (
         id varchar(255) not null,
         lastname varchar(255),
         password varchar(255),
-        role enum ('ADMIN','EMPLOYEE','USER'),
+        role enum ('ADMIN','EMPLOYEE','USER','BUYER','SELLER'),
         primary key (id)
     ) engine=InnoDB
