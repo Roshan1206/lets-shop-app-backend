@@ -26,11 +26,9 @@ public class State {
 	@Column(name = "name")
 	private String name;
 	
-//	@ManyToOne
-//	@JoinColumn(name = "country_id")
-//	private Country country;
-	
-	@Column(name = "country_id")
-	private Integer countryId;
+	@ManyToOne
+	@JoinColumn(name = "country_id")
+	private Country country;
+
 }
 

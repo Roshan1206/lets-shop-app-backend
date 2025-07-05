@@ -25,13 +25,13 @@ public class Cart {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;
+	private long id;
 	
 	@Column(name = "email")
 	private String email;
 	
 	@Column(name = "product_id")
-	private Long productId;
+	private long productId;
 	
 	@Column(name = "product_name")
 	private String productName;
@@ -43,7 +43,7 @@ public class Cart {
 	private Double productPrice;
 	
 	@Column(name = "product_quantity")
-	private Integer productQuantity;
+	private int productQuantity;
 	
 	@Column(name = "total_product_price")
 	private Double totalProductPrice;

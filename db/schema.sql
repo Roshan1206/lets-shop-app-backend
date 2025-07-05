@@ -1,0 +1,15 @@
+--drop table if exists cart
+--drop table if exists state
+--drop table if exists country
+--drop table if exists orders
+--drop table if exists product
+--drop table if exists product_category
+--drop table if exists users
+--create table cart (product_price float(53), product_quantity integer, total_product_price float(53), id bigint not null auto_increment, product_id bigint, email varchar(255), product_name varchar(255), product_thumbnail varchar(255), primary key (id)) engine=InnoDB
+--create table country (id bigint not null auto_increment, code varchar(255), name varchar(255), primary key (id)) engine=InnoDB
+--create table orders (product_quantity integer, total_price float(53), date_created datetime(6), id bigint not null auto_increment, product_id bigint, email varchar(255), primary key (id)) engine=InnoDB
+--create table product (price float(53), category bigint, id bigint not null auto_increment, stock bigint, brand varchar(255), description varchar(255), name varchar(255), thumbnail varchar(255), primary key (id)) engine=InnoDB
+--create table product_category (id bigint not null auto_increment, product_category varchar(255), primary key (id)) engine=InnoDB
+--create table state (country_id bigint, id bigint not null auto_increment, name varchar(255), primary key (id)) engine=InnoDB
+--create table users (email varchar(255), firstname varchar(255), id varchar(255) not null, lastname varchar(255), password varchar(255), role enum ('ADMIN','BUYER','EMPLOYEE','SELLER','USER'), primary key (id)) engine=InnoDB
+--alter table state add constraint FKghic7mqjt6qb9vq7up7awu0er foreign key (country_id) references country (id)

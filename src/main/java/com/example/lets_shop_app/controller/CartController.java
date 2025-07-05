@@ -1,20 +1,16 @@
 package com.example.lets_shop_app.controller;
 
-import java.security.Principal;
 import java.util.List;
 
+import com.example.lets_shop_app.service.CartService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.lets_shop_app.entity.Cart;
-import com.example.lets_shop_app.dto.CartItemsResponse;
+import com.example.lets_shop_app.dto.CartResponse;
 import com.example.lets_shop_app.dto.CartRequest;
 import com.example.lets_shop_app.dto.CartResponse;
-import com.example.lets_shop_app.service.CartService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,28 +21,33 @@ public class CartController {
 	
 	private final CartService cartService;
 	
-	@GetMapping("/cart-items")
-	public List<CartItemsResponse> getCartItems(Principal principal) {
-		return cartService.getCartItems(principal);
+	@GetMapping
+	public List<CartResponse> getCartItems() {
+		return cartService.getCartItems();
 	}
 	
-	@PostMapping("/add-to-cart")
-	public ResponseEntity<CartResponse> addToCart(@RequestBody CartRequest cart, Principal principal){
+	@PostMapping
+	public ResponseEntity<CartResponse> addToCart(@RequestBody CartRequest cart){
 		System.out.println(cart);
-		cartService.addToCart(cart, principal);
+		CartResponse cartItemsResponse = cartService.addToCart(cart);
+		return ResponseEntity.status(HttpStatus.CREATED).body(cartItemsResponse);
+	}
+
+	@PutMapping("/increment/{cartId}")
+	public ResponseEntity<CartResponse> incrementCartItemQuantity(@PathVariable long cartId){
+		cartService.decrementCartItem(cartId);
 		return ResponseEntity.ok().build();
 	}
 	
-	@PostMapping("/decrement-cart-item")
-	public ResponseEntity<CartResponse> decrementCartItemQuantity(@RequestBody Cart cart, Principal principal){
-		cartService.decrementCartItem(cart, principal);
+	@PostMapping("/decrement/{cartId}")
+	public ResponseEntity<CartResponse> decrementCartItemQuantity(@PathVariable long cartId){
+		cartService.incrementCartItem(cartId);
 		return ResponseEntity.ok().build();
 	}
 	
-	@PostMapping("/remove-cart-item")
-	public ResponseEntity<Cart> deleteCartItem(@RequestBody Cart cart, Principal principal){
-		cartService.removeCartItem(cart, principal);
-		return ResponseEntity.ok().build();
+	@DeleteMapping("/{cartId}")
+	public void deleteCartItem(@PathVariable long cartId){
+		cartService.removeCartItem(cartId);
 	}
 
 }

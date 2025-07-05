@@ -1,8 +1,8 @@
 package com.example.lets_shop_app.controller;
 
-import java.security.Principal;
 import java.util.List;
 
+import com.example.lets_shop_app.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.lets_shop_app.dto.OrderCreateRequest;
 import com.example.lets_shop_app.dto.OrderUserResponse;
-import com.example.lets_shop_app.service.OrderService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,15 +22,13 @@ public class OrderController {
 
 	private final OrderService orderService;
 	
-	@PostMapping("/create-order")
-	public ResponseEntity<Long> createOrder(
-			@RequestBody OrderCreateRequest orderCreateRequest, 
-			Principal principal){
-		return ResponseEntity.ok(orderService.addOrder(orderCreateRequest, principal));
+	@PostMapping
+	public ResponseEntity<Long> createOrder(@RequestBody OrderCreateRequest orderCreateRequest){
+		return ResponseEntity.ok(orderService.addOrder(orderCreateRequest));
 	}
 	
-	@GetMapping("/get-orders")
-	public ResponseEntity<List<OrderUserResponse>> getUserOrder(Principal principal){
-		return ResponseEntity.ok(orderService.getUserOrder(principal));
+	@GetMapping
+	public ResponseEntity<List<OrderUserResponse>> getUserOrder(){
+		return ResponseEntity.ok(orderService.getUserOrder());
 	}
 }

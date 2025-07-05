@@ -2,14 +2,14 @@ package com.example.lets_shop_app.controller;
 
 import com.example.lets_shop_app.dto.ProductSaveDto;
 import com.example.lets_shop_app.entity.Product;
-import com.example.lets_shop_app.service.ProductsService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.lets_shop_app.service.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +18,7 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-    @Autowired
-    private ProductsService productsService;
+    private ProductService productService;
 
     @GetMapping
     public ResponseEntity<Page<Product>> getProducts(@RequestParam(defaultValue = "0") int page,
@@ -28,21 +27,23 @@ public class ProductController {
                                                      @RequestParam(defaultValue = "true") boolean asc){
         Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(page, size, sort);
-        return ResponseEntity.status(HttpStatus.OK).body(productsService.getProducts(pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageable));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProduct(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(productsService.findByProductId(id));
+    public ResponseEntity<Product> getProduct(@PathVariable long id){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.findByProductId(id));
     }
 
-    @PostMapping("/add")
+    @PreAuthorize("hasRole('SELLER')")
+    @PostMapping
     public ResponseEntity<ProductSaveDto> addProduct(@RequestBody Product product){
-        return ResponseEntity.status(HttpStatus.CREATED).body(productsService.addProduct(product));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.addProduct(product));
     }
 
+    @PreAuthorize("hasRole('SELLER')")
     @PostMapping("/add-all")
     public ResponseEntity<List<ProductSaveDto>> addAllProduct(@RequestBody List<Product> products){
-        return ResponseEntity.status(HttpStatus.CREATED).body(productsService.addAllProduct(products));
+        return ResponseEntity.status(HttpStatus.CREATED).body(productService.addAllProduct(products));
     }
 }

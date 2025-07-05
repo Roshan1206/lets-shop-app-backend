@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CartResponse {
 
-	private Long id;
-	private Integer productId;
+	private long id;
+	private long productId;
 	private String productName;
 	private Double productPrice;
 	private String productThumbnail;
 	private Double totalProductPrice;
-	private Integer productQuantity;
+	private int productQuantity;
 	
 }

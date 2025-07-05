@@ -4,31 +4,18 @@ package com.example.lets_shop_app.entity;
 import java.util.Collection;
 import java.util.List;
 
+import jakarta.persistence.*;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.lets_shop_app.entity._enum.Role;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Entity
-@Data
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "user")
+@Table(name = "users")
 public class User implements UserDetails{
 
 	@Id
@@ -36,10 +23,10 @@ public class User implements UserDetails{
 	@Column(name = "id")
 	private String id;
 	
-	@Column(name = "firstname")
+	@Column(name = "first_name")
 	private String firstname;
 	
-	@Column(name = "lastname")
+	@Column(name = "last_name")
 	private String lastname;
 	
 	@Column(name = "email")
@@ -47,14 +34,14 @@ public class User implements UserDetails{
 	
 	@Column(name = "password")
 	private String password;
-	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "role")
-	private Role role;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
+	private List<Authority> authorities;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority(role.name()));
+		return authorities;
 	}
 
 	@Override
