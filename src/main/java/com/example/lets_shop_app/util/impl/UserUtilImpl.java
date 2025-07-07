@@ -14,16 +14,20 @@ import org.springframework.stereotype.Component;
 public class UserUtilImpl implements UserUtil {
 
     private final UserRepository userRepository;
+
+    @Override
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return userRepository.findByEmail(authentication.getName()).orElseThrow(
+                () -> new UsernameNotFoundException("Email not found")
+        );
+    }
+
     /**
      * @return
      */
     @Override
     public String getAuthenticatedUserEmail() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = userRepository.findByEmail(authentication.getPrincipal().toString()).orElseThrow(
-                () -> new UsernameNotFoundException("Email not found")
-        );
-
-        return user.getEmail();
+        return getAuthenticatedUser().getEmail();
     }
 }

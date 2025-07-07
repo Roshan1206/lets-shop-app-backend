@@ -1,10 +1,9 @@
 package com.example.lets_shop_app.config;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
-import org.springframework.boot.actuate.health.HealthEndpoint;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -29,7 +28,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+public class JWTSecurityConfiguration {
 	
 	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 	private final AuthenticationProvider authenticationProvider;
@@ -44,15 +43,16 @@ public class SecurityConfiguration {
 	*
 	* */
 	@Bean
+	@Order(2)
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 				.cors(Customizer.withDefaults())
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(req ->
 						req
+								.requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**",
+										"/swagger-resources/**", "/webjars/**", "/docs", "/error").permitAll()
 								.requestMatchers(HttpMethod.GET, "/products/**", "/products", "/product-category", "/product-category/**").permitAll()
-								.requestMatchers("/v3/**", "/swagger-ui/**", "/auth/**", "/error").permitAll()
-								.requestMatchers(EndpointRequest.to(HealthEndpoint.class)).permitAll()
 								.anyRequest().authenticated())
 				.sessionManagement(session ->
 						session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -1,5 +1,6 @@
 package com.example.lets_shop_app.entity;
 
+import java.util.List;
 import java.util.Set;
 
 
@@ -34,6 +35,6 @@ public class ProductCategory {
 	@Column(name = "product_category")
 	private String productCategory;
 	
-//	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
-//	private Set<Product> products;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "category")
+	private List<Product> products;
 }

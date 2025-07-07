@@ -3,6 +3,7 @@ package com.example.lets_shop_app.controller;
 import java.util.List;
 
 import com.example.lets_shop_app.service.CartService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import com.example.lets_shop_app.dto.CartResponse;
 
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Cart Endpoints", description = "Operational REST API endpoints related to Cart")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/carts")

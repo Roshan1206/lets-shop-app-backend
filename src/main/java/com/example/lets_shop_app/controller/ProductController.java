@@ -3,6 +3,8 @@ package com.example.lets_shop_app.controller;
 import com.example.lets_shop_app.dto.ProductSaveDto;
 import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.service.ProductService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Product Endpoints", description = "Operational REST API endpoints related to Product")
 @RestController
 @RequestMapping("/products")
+@RequiredArgsConstructor
 public class ProductController {
 
     private ProductService productService;

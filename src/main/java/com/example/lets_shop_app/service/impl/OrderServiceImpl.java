@@ -58,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
             tempOrderUserResponse.setProductName(product.get().getName());
             tempOrderUserResponse.setProductPrice(product.get().getPrice());
             tempOrderUserResponse.setProductThumbnail(product.get().getThumbnail());
-            tempOrderUserResponse.setCreatedDate(order.getDateCreated());
+            tempOrderUserResponse.setCreatedDate(order.getCreatedAt());
             tempOrderUserResponse.setProductQuantity(order.getProductQuantity());
             tempOrderUserResponse.setTotalPrice(order.getTotalPrice());
 

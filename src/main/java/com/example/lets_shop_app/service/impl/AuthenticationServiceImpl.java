@@ -1,8 +1,10 @@
 package com.example.lets_shop_app.service.impl;
 
+import com.example.lets_shop_app.constant.Constants;
 import com.example.lets_shop_app.entity.Authority;
 import com.example.lets_shop_app.service.AuthenticationService;
 import com.example.lets_shop_app.service.JwtService;
+import com.example.lets_shop_app.util.UserUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -28,6 +30,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private final JwtService jwtService;
 	private final AuthenticationManager authenticationManager;
 	private final PasswordEncoder passwordEncoder;
+	private final UserUtil userUtil;
 
 	@Override
 	public AuthenticationResponse register(RegisterRequest registerRequest, String authority) {
@@ -44,9 +47,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(authenticateRequest.getEmail(), authenticateRequest.getPassword()));
 		
-		User user = userRepository.findByEmail(authenticateRequest.getEmail()).orElseThrow(
-				() -> new UsernameNotFoundException("Invalid username")
-		);
+		User user = userUtil.getAuthenticatedUser();
 		String jwtToken = jwtService.generateToken(user);
 
 		return new AuthenticationResponse(jwtToken);
@@ -58,6 +59,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		List<Authority> authorities = new ArrayList<>();
 
 		authorities.add(new Authority("ROLE_" + authority));
+		if(userRepository.count() == 0){
+			authorities.add(new Authority("ROLE_" + Constants.ADMIN));
+		}
 
 		user.setFirstname(registerRequest.getFirstname());
 		user.setLastname(registerRequest.getLastname());
