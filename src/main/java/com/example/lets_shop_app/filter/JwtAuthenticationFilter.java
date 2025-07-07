@@ -1,4 +1,4 @@
-package com.example.lets_shop_app.auth;
+package com.example.lets_shop_app.filter;
 
 import java.io.IOException;
 

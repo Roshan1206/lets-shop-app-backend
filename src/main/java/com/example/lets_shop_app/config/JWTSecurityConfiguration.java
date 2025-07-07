@@ -18,7 +18,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import com.example.lets_shop_app.auth.JwtAuthenticationFilter;
+import com.example.lets_shop_app.filter.JwtAuthenticationFilter;
 
 import lombok.RequiredArgsConstructor;
 
