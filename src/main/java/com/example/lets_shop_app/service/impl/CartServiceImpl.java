@@ -26,6 +26,12 @@ public class CartServiceImpl implements CartService {
 	private final UserUtil userUtil;
 
 
+	/**
+	 * Create a new cart item in user carts
+	 *
+	 * @param cartRequest item to be added in cart
+	 * @return created cart item
+	 */
 	@Override
 	public CartResponse addToCart(CartRequest cartRequest) {
 		String userEmail = userUtil.getAuthenticatedUserEmail();
@@ -58,16 +64,23 @@ public class CartServiceImpl implements CartService {
 	}
 
 
+	/**
+	 * Increment the product quantity by 1 in the cart
+	 */
 	@Override
 	public void incrementCartItem(long cartId) {
 		Cart existingCart = findExistingCartItem(cartId);
 		int productQuantity = existingCart.getProductQuantity();
 
 		existingCart.setProductQuantity(++productQuantity);
+		existingCart.setTotalProductPrice(calculateSingleCartItemPrice(existingCart));
 		cartRepository.save(existingCart);
 	}
 
 
+	/**
+	 * Decrement the product quantity by 1 in the cart
+	 */
 	@Override
 	public void decrementCartItem(long cartId) {
 		Cart existingCart = findExistingCartItem(cartId);
@@ -83,6 +96,11 @@ public class CartServiceImpl implements CartService {
 	}
 
 
+	/**
+	 * Delete the selected cart item
+	 *
+	 * @param cartId id
+	 */
 	@Override
 	public void removeCartItem(long cartId) {
 		Cart existingCart = findExistingCartItem(cartId);

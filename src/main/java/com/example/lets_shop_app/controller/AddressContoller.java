@@ -14,19 +14,41 @@ import com.example.lets_shop_app.dto.CountryResponse;
 
 import lombok.RequiredArgsConstructor;
 
+
+/**
+ * Controller class for address related operations
+ *
+ * @author Roshan
+ */
 @Tag(name = "Address Endpoints", description = "Operational REST API endpoints related to Address")
 @RestController
 @RequestMapping("/address")
 @RequiredArgsConstructor
 public class AddressContoller {
 
+	/**
+	 * Service class for performing operations.
+	 */
 	private final AddressService addressService;
-	
+
+
+	/**
+	 * Get all countries
+	 *
+	 * @return List of countries
+	 */
 	@GetMapping("/countries")
 	public List<CountryResponse> getCountries(){
 		return addressService.getAllCountries();
 	}
-	
+
+
+	/**
+	 * Get all states for a particular country
+	 *
+	 * @param id country id
+	 * @return List of states for that country
+	 */
 	@GetMapping("/states/{id}")
 	public List<State> getStates(@PathVariable int id){
 		return addressService.getStates(id);

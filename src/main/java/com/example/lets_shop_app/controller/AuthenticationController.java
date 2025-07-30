@@ -18,15 +18,30 @@ import com.example.lets_shop_app.dto.RegisterRequest;
 
 import lombok.RequiredArgsConstructor;
 
+
+/**
+ * Controller class for Authentication and Registration
+ *
+ * @author Roshan
+ */
 @Tag(name = "Authentication Endpoints", description = "Operational REST API endpoints related to Authentication")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthenticationController {
 
+
+	/**
+	 * Injecting Service class for authentication operations using lombok
+	 */
 	private final AuthenticationService authenticationService;
 
-
+	/**
+	 * Creating user profile with USER role
+	 *
+	 * @param registerRequest details for creating user
+	 * @return AuthenticationResponse/jwt token
+	 */
 	@Operation(
 			summary = "Create user account",
 			description = "Create user account for shopping",
@@ -44,6 +59,12 @@ public class AuthenticationController {
 	}
 
 
+	/**
+	 * Creating user profile with SELLER role
+	 *
+	 * @param registerRequest details for creating user
+	 * @return AuthenticationResponse/jwt token
+	 */
 	@Operation(
 			summary = "Create seller account",
 			description = "Create seller accounts for merchants",
@@ -60,6 +81,12 @@ public class AuthenticationController {
 	}
 
 
+	/**
+	 * Creating user profile with ADMIN role
+	 *
+	 * @param registerRequest details for creating user
+	 * @return AuthenticationResponse/jwt token
+	 */
 	@Operation(
 			summary = "Create admin account",
 			description = "Create admin account for internal employees",
@@ -76,6 +103,12 @@ public class AuthenticationController {
 	}
 
 
+	/**
+	 * Sign in the server
+	 *
+	 * @param authenticateRequest User credentials
+	 * @return jwt token
+	 */
 	@Operation(
 			summary = "Sign in",
 			description = "Sign in to your account",

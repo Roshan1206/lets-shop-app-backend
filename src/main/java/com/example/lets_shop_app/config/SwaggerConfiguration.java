@@ -10,9 +10,20 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
+/**
+ * Configuration class for OpenAPI Swagger <br>
+ * Application details and security are configured for documentation and testing.
+ *
+ * @author Roshan
+ */
 @Configuration
 public class SwaggerConfiguration {
 
+    /**
+     * Configures {@link OpenAPI} bean for Application documentation and API testing in swagger.
+     *
+     * @return configured {@link OpenAPI} instance
+     */
     @Bean
     public OpenAPI openAPI(){
         return new OpenAPI()

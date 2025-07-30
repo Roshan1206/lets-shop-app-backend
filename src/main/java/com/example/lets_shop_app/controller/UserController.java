@@ -29,14 +29,9 @@ public class UserController {
             }
     )
     @GetMapping("/info")
-//    public ResponseEntity<UserInfoResponseDto> getUserInfo(){
-//        UserInfoResponseDto userInfoResponseDto = userService.getUserInfo();
-//        return ResponseEntity.status(HttpStatus.OK).body(userInfoResponseDto);
-//    }
     @ResponseStatus(HttpStatus.OK)
     public UserInfoResponseDto getUserInfo(){
         return userService.getUserInfo();
-//        return ResponseEntity.status(HttpStatus.OK).body(userInfoResponseDto);
     }
 
 

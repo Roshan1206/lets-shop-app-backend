@@ -1,5 +1,6 @@
 package com.example.lets_shop_app.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CartRequest {
 
+	@NotNull
 	public Long productId;
+
+	@NotNull
 	public Integer productQuantity;
 }
