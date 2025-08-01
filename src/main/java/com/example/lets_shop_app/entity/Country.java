@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "country")
 @Getter
 @Setter
-@ToString
 public class Country {
 
 	@Id

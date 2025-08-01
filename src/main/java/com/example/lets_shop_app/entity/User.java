@@ -21,7 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
-public class User implements UserDetails{
+public class User extends BaseEntity implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,14 +42,6 @@ public class User implements UserDetails{
 	
 	@Column(name = "password")
 	private String password;
-
-	@Column(name = "created_at", updatable = false)
-	@CreationTimestamp
-	private Date createdAt;
-
-	@Column(name = "updated_at", insertable = false)
-	@UpdateTimestamp
-	private Date updatedAt;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))

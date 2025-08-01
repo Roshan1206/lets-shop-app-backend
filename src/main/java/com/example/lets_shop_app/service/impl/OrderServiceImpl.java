@@ -1,9 +1,10 @@
 package com.example.lets_shop_app.service.impl;
 
 import java.util.List;
-import java.util.Optional;
 
+import com.example.lets_shop_app.entity.Cart;
 import com.example.lets_shop_app.service.OrderService;
+import com.example.lets_shop_app.util.CartUtil;
 import com.example.lets_shop_app.util.UserUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,6 @@ import com.example.lets_shop_app.dao.OrderRepository;
 import com.example.lets_shop_app.dao.ProductRepository;
 import com.example.lets_shop_app.entity.Order;
 import com.example.lets_shop_app.entity.Product;
-import com.example.lets_shop_app.dto.OrderCreateRequest;
 import com.example.lets_shop_app.dto.OrderUserResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -30,30 +30,31 @@ public class OrderServiceImpl implements OrderService {
 
 
 	/**
-	 * Injecting {@link ProductRepository}, {@link OrderRepository}, {@link UserUtil}
+	 * Injecting {@link com.example.lets_shop_app.util.CartUtil}, {@link OrderRepository}, {@link ProductRepository}, {@link UserUtil}
 	 */
-	private final ProductRepository productRepository;
+	private final CartUtil cartUtil;
 	private final OrderRepository orderRepository;
+	private final ProductRepository productRepository;
 	private final UserUtil userUtil;
 
 
 	/**
 	 * Create new order for user.
 	 *
-	 * @param orderRequest details to create new order
+	 * @param cartId details to create new order
 	 * @return order id
 	 */
 	@Override
-	public long addOrder(OrderCreateRequest orderRequest) {
+	public long addOrder(long cartId) {
 		String userEmail = userUtil.getAuthenticatedUserEmail();
-		Optional<Product> product = productRepository.findById(orderRequest.getProductId());
-		final long productId = product.get().getId();
-		final Double totalPrice = product.get().getPrice()*orderRequest.getTotalQuantity();
+		Cart cart = cartUtil.getCartItem(cartId);
+		final long productId = cart.getProductId();
+		final double totalPrice = cartUtil.calculateSingleCartItemPrice(cart);
 		
 		Order newOrder = new Order();
 		newOrder.setEmail(userEmail);
 		newOrder.setProductId(productId);
-		newOrder.setProductQuantity(orderRequest.getTotalQuantity());
+		newOrder.setProductQuantity(cart.getProductQuantity());
 		newOrder.setTotalPrice(totalPrice);
 		
 		Order savedOrder = orderRepository.save(newOrder);

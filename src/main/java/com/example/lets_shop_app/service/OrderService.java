@@ -1,6 +1,5 @@
 package com.example.lets_shop_app.service;
 
-import com.example.lets_shop_app.dto.OrderCreateRequest;
 import com.example.lets_shop_app.dto.OrderUserResponse;
 
 import java.util.List;
@@ -16,10 +15,10 @@ public interface OrderService {
     /**
      * Create new order for user.
      *
-     * @param orderRequest details to create new order
+     * @param cartId details to create new order
      * @return order id
      */
-    long addOrder(OrderCreateRequest orderRequest);
+    long addOrder(long cartId);
 
 
     /**

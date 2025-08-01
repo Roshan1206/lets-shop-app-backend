@@ -6,6 +6,7 @@ import com.example.lets_shop_app.service.AddressService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -52,5 +53,11 @@ public class AddressContoller {
 	@GetMapping("/states/{id}")
 	public List<State> getStates(@PathVariable int id){
 		return addressService.getStates(id);
+	}
+
+
+	@PostMapping("/add")
+	public void createNewUserAddress(){
+
 	}
 }

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.lets_shop_app.dto.OrderCreateRequest;
 import com.example.lets_shop_app.dto.OrderUserResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -34,12 +33,12 @@ public class OrderController {
 	/**
 	 * Creating new Order for user
 	 *
-	 * @param orderCreateRequest Order details
+	 * @param cartId Order details
 	 * @return order id
 	 */
 	@PostMapping
-	public ResponseEntity<Long> createOrder(@RequestBody OrderCreateRequest orderCreateRequest){
-		return ResponseEntity.ok(orderService.addOrder(orderCreateRequest));
+	public ResponseEntity<Long> createOrder(@RequestParam long cartId){
+		return ResponseEntity.ok(orderService.addOrder(cartId));
 	}
 
 
@@ -59,8 +58,8 @@ public class OrderController {
 	 *
 	 * @return list of user orders
 	 */
-//	@GetMapping("/{id}")
-//	public ResponseEntity<OrderUserResponse> getUserOrder(@PathVariable Long id){
-//		return ResponseEntity.ok(orderService.getUserOrder());
-//	}
+	@GetMapping("/{id}")
+	public ResponseEntity<OrderUserResponse> getUserOrder(@PathVariable Long id){
+		return ResponseEntity.ok(orderService.getUserOrder(id));
+	}
 }

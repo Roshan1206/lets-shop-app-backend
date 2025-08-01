@@ -41,7 +41,8 @@ public class UserServiceImpl implements UserService {
         userInfoResponseDto.setFirstName(user.getFirstname());
         userInfoResponseDto.setLastName(user.getLastname());
         userInfoResponseDto.setEmail(user.getEmail());
-        userInfoResponseDto.setAuthorities(user.getAuthorities().stream().map(authority -> (Authority) authority).toList());
+//        userInfoResponseDto.setAccountCreatedAt(user.get);
+//        userInfoResponseDto.setAccountLastModifiedAt(user.getUpdatedAt());
         return userInfoResponseDto;
     }
 

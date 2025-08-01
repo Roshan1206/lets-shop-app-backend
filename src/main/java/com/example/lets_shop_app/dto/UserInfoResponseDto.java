@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -18,5 +18,6 @@ public class UserInfoResponseDto {
     private String firstName;
     private String lastName;
     private String email;
-    private List<Authority> authorities;
+    private Date accountCreatedAt;
+    private Date accountLastModifiedAt;
 }

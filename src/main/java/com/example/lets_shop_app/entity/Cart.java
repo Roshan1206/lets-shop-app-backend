@@ -12,10 +12,9 @@ import lombok.ToString;
 @Table(name = "cart")
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Cart {
+public class Cart extends BaseEntity {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

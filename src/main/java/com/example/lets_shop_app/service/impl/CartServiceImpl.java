@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.example.lets_shop_app.exception.CartNotFoundException;
 import com.example.lets_shop_app.service.CartService;
+import com.example.lets_shop_app.util.CartUtil;
 import com.example.lets_shop_app.util.UserUtil;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartServiceImpl implements CartService {
 
+	private final CartUtil cartUtil;
 	private final CartRepository cartRepository;
 	private final ProductRepository productRepository;
 	private final UserUtil userUtil;
@@ -73,7 +75,8 @@ public class CartServiceImpl implements CartService {
 		int productQuantity = existingCart.getProductQuantity();
 
 		existingCart.setProductQuantity(++productQuantity);
-		existingCart.setTotalProductPrice(calculateSingleCartItemPrice(existingCart));
+		double price = cartUtil.calculateSingleCartItemPrice(existingCart);
+		existingCart.setTotalProductPrice(price);
 		cartRepository.save(existingCart);
 	}
 
@@ -88,7 +91,8 @@ public class CartServiceImpl implements CartService {
 		
 		if(productQuantity > 1) {
 			existingCart.setProductQuantity(--productQuantity);
-			existingCart.setTotalProductPrice(calculateSingleCartItemPrice(existingCart));
+			double price = cartUtil.calculateSingleCartItemPrice(existingCart);
+			existingCart.setTotalProductPrice(price);
 			cartRepository.save(existingCart);
 		}else {
 			removeCartItem(existingCart.getId());
@@ -136,9 +140,5 @@ public class CartServiceImpl implements CartService {
 		cartResponse.setTotalProductPrice(cart.getTotalProductPrice());
 		cartResponse.setProductQuantity(cart.getProductQuantity());
 		return cartResponse;
-	}
-
-	private double calculateSingleCartItemPrice(Cart cart){
-		return cart.getProductPrice() * cart.getProductQuantity();
 	}
 }

@@ -21,6 +21,8 @@ import lombok.RequiredArgsConstructor;
 
 /**
  * Custom Filter Class for JWT Authentication
+ *
+ * @author Roshan
  */
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -28,11 +30,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	private final JwtService jwtService;
 	private final UserDetailsService userDetailsService;
 
+
+	/**
+	 * Injecting {@link JwtService} and {@link UserDetailsService}
+	 */
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }
 
+
+	/**
+	 * Overriding {@code doFilterInternal} method from {@link OncePerRequestFilter}
+	 * class to extract and validate JWT token
+	 */
     @Override
 	protected void doFilterInternal(
 			@NonNull HttpServletRequest request,
