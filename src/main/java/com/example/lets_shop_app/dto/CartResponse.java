@@ -1,8 +1,11 @@
 package com.example.lets_shop_app.dto;
 
+import com.example.lets_shop_app.entity.Product;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
@@ -10,11 +13,8 @@ import lombok.NoArgsConstructor;
 public class CartResponse {
 
 	private long id;
-	private long productId;
-	private String productName;
-	private Double productPrice;
-	private String productThumbnail;
-	private Double totalProductPrice;
+	private Product product;
+	private BigDecimal totalProductPrice;
 	private int productQuantity;
 	
 }

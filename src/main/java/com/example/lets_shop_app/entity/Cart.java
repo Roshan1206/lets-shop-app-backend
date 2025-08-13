@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.Set;
+
 
 @Entity
 @Table(name = "cart")
@@ -20,29 +22,9 @@ public class Cart extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private long id;
-	
-	@Column(name = "email")
-	private String email;
-	
-	@Column(name = "product_id")
-	private long productId;
-	
-	@Column(name = "product_name")
-	private String productName;
-	
-	@Column(name = "product_thumbnail")
-	private String productThumbnail;
-	
-	@Column(name = "product_price")
-	private Double productPrice;
-	
-	@Column(name = "product_quantity")
-	private int productQuantity;
-	
-	@Column(name = "total_product_price")
-	private Double totalProductPrice;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "user_id", nullable = false)
-	private User user;
+	private int count;
+
+	@OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private Set<CartItem> cartItems;
 }

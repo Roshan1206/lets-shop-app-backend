@@ -1,18 +1,15 @@
 package com.example.lets_shop_app.entity;
 
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -32,9 +29,12 @@ public class Product extends BaseEntity {
 	
 	@Column(name = "description")
 	private String description;
+
+	@Column(name = "thumbnail")
+	private String thumbnail;
 	
 	@Column(name = "price")
-	private Double price;
+	private BigDecimal price;
 	
 	@Column(name = "stock")
 	private long stock;
@@ -45,11 +45,7 @@ public class Product extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "category", nullable = false)
 	private ProductCategory category;
-	
-//	@Column(name = "category")
-//	private Long category;
-	
-	@Column(name = "thumbnail")
-	private String thumbnail;
-	
+
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<CartItem> cartItems;
 }

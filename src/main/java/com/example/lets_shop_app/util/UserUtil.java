@@ -24,4 +24,12 @@ public interface UserUtil {
      * @return String userEmail
      */
     User getAuthenticatedUser();
+
+
+    /**
+     * Fetches current authenticated user id
+     *
+     * @return long userId
+     */
+    long getUserId();
 }

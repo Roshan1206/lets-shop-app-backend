@@ -1,5 +1,7 @@
 package com.example.lets_shop_app.dto;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.AllArgsConstructor;
@@ -11,11 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OrderUserResponse {
 
-	private Long productId;
+	private long id;
+	private long productId;
 	private String productName;
 	private String productThumbnail;
-	private Double productPrice;
-	private Integer productQuantity;
-	private Double totalPrice;
-	private Date createdDate;
+	private BigDecimal productPrice;
+	private int productQuantity;
+	private BigDecimal totalPrice;
+	private LocalDateTime createdDate;
 }

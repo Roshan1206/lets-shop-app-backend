@@ -1,22 +1,29 @@
 package com.example.lets_shop_app.service.impl;
 
+import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
-import com.example.lets_shop_app.exception.CartNotFoundException;
+import com.example.lets_shop_app.dao.CartItemRepository;
+import com.example.lets_shop_app.entity.CartItem;
+import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.service.CartService;
 import com.example.lets_shop_app.util.CartUtil;
+import com.example.lets_shop_app.util.ProductUtil;
 import com.example.lets_shop_app.util.UserUtil;
+import io.micrometer.observation.Observation;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.example.lets_shop_app.dao.CartRepository;
-import com.example.lets_shop_app.dao.ProductRepository;
 import com.example.lets_shop_app.entity.Cart;
-import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.dto.CartResponse;
 import com.example.lets_shop_app.dto.CartRequest;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +31,8 @@ public class CartServiceImpl implements CartService {
 
 	private final CartUtil cartUtil;
 	private final CartRepository cartRepository;
-	private final ProductRepository productRepository;
+	private final CartItemRepository cartItemRepository;
+	private final ProductUtil productUtil;
 	private final UserUtil userUtil;
 
 
@@ -36,69 +44,67 @@ public class CartServiceImpl implements CartService {
 	 */
 	@Override
 	public CartResponse addToCart(CartRequest cartRequest) {
-		String userEmail = userUtil.getAuthenticatedUserEmail();
-		Cart existingCart = findCartItem(cartRequest.getProductId(), userEmail);
 		Cart newCart;
+		Optional<Cart> existingCart = cartRepository.findByCreatedBy(userUtil.getUserId());
 
-		if(existingCart != null) {
-			int productQuantity = existingCart.getProductQuantity();
-			existingCart.setProductQuantity(++productQuantity);
-			final double totalProductPrice = existingCart.getProductPrice()*existingCart.getProductQuantity();
-			existingCart.setTotalProductPrice(totalProductPrice);
-			cartRepository.delete(existingCart);
-			newCart = cartRepository.save(existingCart);
+		if(existingCart.isEmpty()){
+			newCart = new Cart();
+			cartRepository.save(newCart);
 		}else {
-			Cart cart = new Cart();
-			Optional<Product> product = productRepository.findById(cartRequest.getProductId());
-
-			cart.setEmail(userEmail);
-			cart.setProductQuantity(1);
-			cart.setProductId(product.get().getId());
-			cart.setProductName(product.get().getName());
-			cart.setProductPrice(product.get().getPrice());
-			cart.setTotalProductPrice(product.get().getPrice());
-			cart.setProductThumbnail(product.get().getThumbnail());
-
-			newCart = cartRepository.save(cart);
+			newCart = existingCart.get();
 		}
-		
-		return convertToCartItemResponse(newCart);
-	}
 
+		CartItem cartItem = new CartItem();
+		cartItem.setCart(newCart);
+
+		Product product = productUtil.getProduct(cartRequest.getProductId());
+		BigDecimal productPrice = cartUtil.calculateCartItemAmount(cartRequest.productQuantity, product.getPrice());
+
+		cartItem.setProduct(product);
+		cartItem.setProductPrice(productPrice);
+		cartItem.setProductQuantity(cartRequest.getProductQuantity());
+
+		CartItem savedCartItem = cartItemRepository.save(cartItem);
+		return cartUtil.converToCartResponse(savedCartItem);
+	}
 
 	/**
 	 * Increment the product quantity by 1 in the cart
+	 *
+	 * @param cartId id
 	 */
 	@Override
 	public void incrementCartItem(long cartId) {
-		Cart existingCart = findExistingCartItem(cartId);
-		int productQuantity = existingCart.getProductQuantity();
+		CartItem cartItem = cartUtil.getCartItem(cartId);
 
-		existingCart.setProductQuantity(++productQuantity);
-		double price = cartUtil.calculateSingleCartItemPrice(existingCart);
-		existingCart.setTotalProductPrice(price);
-		cartRepository.save(existingCart);
+		int quantity = cartItem.getProductQuantity() + 1;
+		BigDecimal price = cartUtil.calculateCartItemAmount(quantity, cartItem.getProductPrice());
+		cartItem.setProductQuantity(quantity);
+		cartItem.setTotalPrice(price);
+		cartItemRepository.save(cartItem);
 	}
-
 
 	/**
 	 * Decrement the product quantity by 1 in the cart
+	 *
+	 * @param cartId id
 	 */
 	@Override
 	public void decrementCartItem(long cartId) {
-		Cart existingCart = findExistingCartItem(cartId);
-		int productQuantity = existingCart.getProductQuantity();
-		
-		if(productQuantity > 1) {
-			existingCart.setProductQuantity(--productQuantity);
-			double price = cartUtil.calculateSingleCartItemPrice(existingCart);
-			existingCart.setTotalProductPrice(price);
-			cartRepository.save(existingCart);
-		}else {
-			removeCartItem(existingCart.getId());
-		}
-	}
+		CartItem cartItem = cartUtil.getCartItem(cartId);
 
+		int quantity = cartItem.getProductQuantity() - 1;
+
+		if (quantity == 0){
+			removeCartItem(cartId);
+			return;
+		}
+
+		BigDecimal price = cartUtil.calculateCartItemAmount(quantity, cartItem.getProductPrice());
+		cartItem.setProductQuantity(quantity);
+		cartItem.setTotalPrice(price);
+		cartItemRepository.save(cartItem);
+	}
 
 	/**
 	 * Delete the selected cart item
@@ -107,38 +113,18 @@ public class CartServiceImpl implements CartService {
 	 */
 	@Override
 	public void removeCartItem(long cartId) {
-		Cart existingCart = findExistingCartItem(cartId);
-		cartRepository.delete(existingCart);
+		cartItemRepository.deleteById(cartId);
 	}
 
-
+	/**
+	 * Get all cart items for current users
+	 *
+	 * @return List of cart items
+	 */
 	@Override
-	public List<CartResponse> getCartItems(){
-		String userEmail = userUtil.getAuthenticatedUserEmail();
-		List<Cart> cartItems = cartRepository.findByEmail(userEmail);
-		
-		return cartItems.stream().map(this::convertToCartItemResponse).toList();
-	}
+	public List<CartResponse> getCart() {
+		Optional<List<CartItem>> cartItems = cartItemRepository.findAllByCreatedBy(userUtil.getUserId());
 
-	private Cart findCartItem(Long productId, String email) {
-		return cartRepository.findByProductIdAndEmail(productId, email);
-	}
-
-	private Cart findExistingCartItem(long cartId){
-		return cartRepository.findById(cartId).orElseThrow(
-				() -> new CartNotFoundException("The specified cart does not exist")
-		);
-	}
-	
-	private CartResponse convertToCartItemResponse(Cart cart){
-		CartResponse cartResponse = new CartResponse();
-		cartResponse.setId(cart.getId());
-		cartResponse.setProductId(cart.getProductId());
-		cartResponse.setProductName(cart.getProductName());
-		cartResponse.setProductThumbnail(cart.getProductThumbnail());
-		cartResponse.setProductPrice(cart.getProductPrice());
-		cartResponse.setTotalProductPrice(cart.getTotalProductPrice());
-		cartResponse.setProductQuantity(cart.getProductQuantity());
-		return cartResponse;
-	}
+        return cartItems.map(items -> items.stream().map(cartUtil::converToCartResponse).toList()).orElseGet(List::of);
+    }
 }

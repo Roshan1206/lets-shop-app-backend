@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -41,17 +42,12 @@ public class User extends BaseEntity implements UserDetails {
 	private String email;
 	
 	@Column(name = "password")
+	@JsonIgnore
 	private String password;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
 	private List<Authority> authorities;
-
-	@OneToMany(mappedBy = "user")
-	private List<Order> orders;
-
-	@OneToMany(mappedBy = "user")
-	private List<Cart> carts;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

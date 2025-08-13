@@ -47,6 +47,16 @@ public class UserUtilImpl implements UserUtil {
     }
 
     /**
+     * Fetches current authenticated user id
+     *
+     * @return long userId
+     */
+    @Override
+    public long getUserId() {
+        return getAuthenticatedUser().getId();
+    }
+
+    /**
      * Fetches current authenticated user email
      *
      * @return String userEmail

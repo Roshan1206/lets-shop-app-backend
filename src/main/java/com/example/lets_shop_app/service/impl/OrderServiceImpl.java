@@ -3,8 +3,10 @@ package com.example.lets_shop_app.service.impl;
 import java.util.List;
 
 import com.example.lets_shop_app.entity.Cart;
+import com.example.lets_shop_app.entity.CartItem;
 import com.example.lets_shop_app.service.OrderService;
 import com.example.lets_shop_app.util.CartUtil;
+import com.example.lets_shop_app.util.ProductUtil;
 import com.example.lets_shop_app.util.UserUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -34,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	private final CartUtil cartUtil;
 	private final OrderRepository orderRepository;
-	private final ProductRepository productRepository;
+	private final ProductUtil productUtil;
 	private final UserUtil userUtil;
 
 
@@ -46,21 +48,16 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public long addOrder(long cartId) {
-		String userEmail = userUtil.getAuthenticatedUserEmail();
-		Cart cart = cartUtil.getCartItem(cartId);
-		final long productId = cart.getProductId();
-		final double totalPrice = cartUtil.calculateSingleCartItemPrice(cart);
-		
-		Order newOrder = new Order();
-		newOrder.setEmail(userEmail);
-		newOrder.setProductId(productId);
-		newOrder.setProductQuantity(cart.getProductQuantity());
-		newOrder.setTotalPrice(totalPrice);
-		
-		Order savedOrder = orderRepository.save(newOrder);
-		return savedOrder.getId();
-	}
+		CartItem cartItem = cartUtil.getCartItem(cartId);
+		Order order = new Order();
 
+		order.setProductId(cartItem.getProduct().getId());
+		order.setProductPrice(cartItem.getProductPrice());
+		order.setProductQuantity(cartItem.getProductQuantity());
+		order.setTotalPrice(cartItem.getTotalPrice());
+
+		return orderRepository.save(order).getId();
+	}
 
 	/**
 	 * Retrieve all orders for specific user
@@ -69,12 +66,9 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public List<OrderUserResponse> getUserOrder() {
-		String email = userUtil.getAuthenticatedUserEmail();
-		List<Order> userOrders= orderRepository.findByEmail(email);
-
-		return userOrders.stream().map(this::convertToOrderUserResponse).toList();
+		List<Order> orders = orderRepository.findByCreatedBy(userUtil.getUserId());
+		return orders.isEmpty() ? List.of() : orders;
 	}
-
 
 	/**
 	 * Retrieve specific order
@@ -84,34 +78,6 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public OrderUserResponse getUserOrder(long id) {
-		String email = userUtil.getAuthenticatedUserEmail();
-		Order order = orderRepository.findById(id).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found")
-		);
-		return convertToOrderUserResponse(order);
-	}
-
-
-	/**
-	 * Create {@link OrderUserResponse} object
-	 *
-	 * @param order Object to be created for
-	 * @return OrderUserResponse
-	 */
-	public OrderUserResponse convertToOrderUserResponse(Order order){
-		OrderUserResponse tempOrderUserResponse = new OrderUserResponse();
-		Product product = productRepository.findById(order.getProductId()).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found")
-		);
-
-		tempOrderUserResponse.setProductId(product.getId());
-		tempOrderUserResponse.setProductName(product.getName());
-		tempOrderUserResponse.setProductPrice(product.getPrice());
-		tempOrderUserResponse.setProductThumbnail(product.getThumbnail());
-		tempOrderUserResponse.setCreatedDate(order.getCreatedAt());
-		tempOrderUserResponse.setProductQuantity(order.getProductQuantity());
-		tempOrderUserResponse.setTotalPrice(order.getTotalPrice());
-
-		return tempOrderUserResponse;
+		return null;
 	}
 }

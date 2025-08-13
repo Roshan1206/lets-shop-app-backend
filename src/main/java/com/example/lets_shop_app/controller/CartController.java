@@ -39,8 +39,12 @@ public class CartController {
 	 * @return List of cart items
 	 */
 	@GetMapping
-	public List<CartResponse> getCartItems() {
-		return cartService.getCartItems();
+	public ResponseEntity<?> getCartItems() {
+		List<CartResponse> items =  cartService.getCart();
+		if (items.isEmpty()){
+			return ResponseEntity.status(HttpStatus.OK).body("Your Cart is empty.");
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(items);
 	}
 
 

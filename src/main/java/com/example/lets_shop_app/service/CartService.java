@@ -52,5 +52,5 @@ public interface CartService {
      *
      * @return List of cart items
      */
-    List<CartResponse> getCartItems();
+    List<CartResponse> getCart();
 }
