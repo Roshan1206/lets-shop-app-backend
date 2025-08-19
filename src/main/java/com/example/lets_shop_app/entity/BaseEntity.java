@@ -29,6 +29,6 @@ public abstract class BaseEntity {
     private LocalDateTime updatedAt;
 
     @CreatedBy
-    @Column(nullable = false, updatable = false)
-    private long createdBy;
+    @Column(name = "created_by", nullable = false, updatable = false)
+    private long userId;
 }

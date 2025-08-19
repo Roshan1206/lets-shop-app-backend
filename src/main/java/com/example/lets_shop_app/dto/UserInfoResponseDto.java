@@ -18,6 +18,4 @@ public class UserInfoResponseDto {
     private String firstName;
     private String lastName;
     private String email;
-    private Date accountCreatedAt;
-    private Date accountLastModifiedAt;
 }

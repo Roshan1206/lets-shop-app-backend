@@ -87,17 +87,6 @@ public class JWTSecurityConfiguration {
 
 
 	/**
-	 * Configures the swagger urls to be ignored
-	 *
-	 * @return {@link WebSecurityCustomizer} instance of ignored swagger
-	 */
-	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer() {
-		return web -> web.ignoring().requestMatchers(SWAGGER_URLS);
-	}
-
-
-	/**
 	 * Configures the Security filter chain for handling HTTP security in the application.
 	 * <p>
 	 *     This Configuration:
@@ -123,6 +112,7 @@ public class JWTSecurityConfiguration {
 				.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(req ->
 						req
+								.requestMatchers(SWAGGER_URLS).permitAll()
 								.requestMatchers(HttpMethod.GET, PRODUCTS_URLS).permitAll()
 								.requestMatchers("/auth/**", "/error").permitAll()
 								.anyRequest().authenticated())

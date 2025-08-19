@@ -1,10 +1,8 @@
 package com.example.lets_shop_app.service.impl;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
 
 import com.example.lets_shop_app.dao.CartItemRepository;
 import com.example.lets_shop_app.entity.CartItem;
@@ -13,8 +11,6 @@ import com.example.lets_shop_app.service.CartService;
 import com.example.lets_shop_app.util.CartUtil;
 import com.example.lets_shop_app.util.ProductUtil;
 import com.example.lets_shop_app.util.UserUtil;
-import io.micrometer.observation.Observation;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.example.lets_shop_app.dao.CartRepository;
@@ -23,7 +19,6 @@ import com.example.lets_shop_app.dto.CartResponse;
 import com.example.lets_shop_app.dto.CartRequest;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +40,7 @@ public class CartServiceImpl implements CartService {
 	@Override
 	public CartResponse addToCart(CartRequest cartRequest) {
 		Cart newCart;
-		Optional<Cart> existingCart = cartRepository.findByCreatedBy(userUtil.getUserId());
+		Optional<Cart> existingCart = cartRepository.findByUserId(userUtil.getUserId());
 
 		if(existingCart.isEmpty()){
 			newCart = new Cart();
@@ -123,7 +118,7 @@ public class CartServiceImpl implements CartService {
 	 */
 	@Override
 	public List<CartResponse> getCart() {
-		Optional<List<CartItem>> cartItems = cartItemRepository.findAllByCreatedBy(userUtil.getUserId());
+		Optional<List<CartItem>> cartItems = cartItemRepository.findAllByUserId(userUtil.getUserId());
 
         return cartItems.map(items -> items.stream().map(cartUtil::converToCartResponse).toList()).orElseGet(List::of);
     }

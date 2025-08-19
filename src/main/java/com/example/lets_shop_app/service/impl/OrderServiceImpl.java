@@ -1,12 +1,12 @@
 package com.example.lets_shop_app.service.impl;
 
 import java.util.List;
+import java.util.Optional;
 
-import com.example.lets_shop_app.entity.Cart;
 import com.example.lets_shop_app.entity.CartItem;
 import com.example.lets_shop_app.service.OrderService;
 import com.example.lets_shop_app.util.CartUtil;
-import com.example.lets_shop_app.util.ProductUtil;
+import com.example.lets_shop_app.util.OrderUtil;
 import com.example.lets_shop_app.util.UserUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import com.example.lets_shop_app.dao.OrderRepository;
 import com.example.lets_shop_app.dao.ProductRepository;
 import com.example.lets_shop_app.entity.Order;
-import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.dto.OrderUserResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -36,7 +35,7 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	private final CartUtil cartUtil;
 	private final OrderRepository orderRepository;
-	private final ProductUtil productUtil;
+	private final OrderUtil orderUtil;
 	private final UserUtil userUtil;
 
 
@@ -66,8 +65,12 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public List<OrderUserResponse> getUserOrder() {
-		List<Order> orders = orderRepository.findByCreatedBy(userUtil.getUserId());
-		return orders.isEmpty() ? List.of() : orders;
+		Optional<List<Order>> orders = orderRepository.findByUserId(userUtil.getUserId());
+
+		if(orders.isEmpty()){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No order has been placed yet");
+		}
+		return orders.get().stream().map(orderUtil::convertToOrderUserResponse).toList();
 	}
 
 	/**
@@ -78,6 +81,12 @@ public class OrderServiceImpl implements OrderService {
 	 */
 	@Override
 	public OrderUserResponse getUserOrder(long id) {
-		return null;
+		Optional<Order> order = orderRepository.findById(id);
+
+		if (order.isEmpty()){
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Order not found");
+		}
+
+		return orderUtil.convertToOrderUserResponse(order.get());
 	}
 }

@@ -19,7 +19,6 @@ import lombok.RequiredArgsConstructor;
  */
 @Tag(name = "Order Endpoints", description = "Operational REST API endpoints related to Order")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/orders")
 public class OrderController {
 
@@ -27,7 +26,12 @@ public class OrderController {
 	/**
 	 * Injecting {@link OrderService}
 	 */
-	private final OrderService orderService;
+	private OrderService orderService;
+
+
+	public OrderController(OrderService orderService){
+		this.orderService = orderService;
+	}
 
 
 	/**
