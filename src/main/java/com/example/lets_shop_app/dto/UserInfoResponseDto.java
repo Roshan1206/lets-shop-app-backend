@@ -14,7 +14,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserInfoResponseDto {
 
-    private long id;
     private String firstName;
     private String lastName;
     private String email;
