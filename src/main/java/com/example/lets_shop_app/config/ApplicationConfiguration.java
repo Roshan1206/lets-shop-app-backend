@@ -1,10 +1,11 @@
 package com.example.lets_shop_app.config;
 
+import com.example.lets_shop_app.provider.CustomAuthenticationProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -76,27 +77,13 @@ public class ApplicationConfiguration {
 	/**
 	 * Provides the {@link AuthenticationManager} bean used for processing authentication requests.
 	 *
-	 * @param configuration {@link AuthenticationConfiguration} provided by Spring Security
-	 * @return the default {@link AuthenticationManager}
+	 * @param userDetailsService {@link UserDetailsService} provided by Spring Security
+	 * @param passwordEncoder {@link PasswordEncoder} provided by Spring Security
+	 * @return the {@link CustomAuthenticationProvider} to be used in {@link AuthenticationManager}
 	 * @throws Exception if authentication manager cannot be retrieved
 	 */
 	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-		return configuration.getAuthenticationManager();
-	}
-
-
-	/**
-	 * Provides the {@link AuthenticationProvider} bean that uses DAO-based authentication mechanism.
-	 * This sets the {@link UserDetailsService} and {@link PasswordEncoder} into a {@link DaoAuthenticationProvider}
-	 *
-	 * @return authenticationProvider {@link AuthenticationProvider}
-	 */
-	@Bean
-	public AuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-		authenticationProvider.setUserDetailsService(userDetailsService());;
-		authenticationProvider.setPasswordEncoder(passwordEncoder());
-		return authenticationProvider;
+	public AuthenticationManager authenticationManager(UserDetailsService userDetailsService, PasswordEncoder passwordEncoder) throws Exception {
+		return new ProviderManager(new CustomAuthenticationProvider(passwordEncoder, userDetailsService));
 	}
 }
