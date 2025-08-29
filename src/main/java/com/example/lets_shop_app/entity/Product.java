@@ -1,6 +1,7 @@
 package com.example.lets_shop_app.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -44,6 +45,7 @@ public class Product extends BaseEntity {
 	
 	@ManyToOne
 	@JoinColumn(name = "category", nullable = false)
+	@JsonIgnoreProperties("products")
 	private ProductCategory category;
 
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)

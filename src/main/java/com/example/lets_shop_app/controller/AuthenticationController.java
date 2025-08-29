@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,6 +61,28 @@ public class AuthenticationController {
 
 
 	/**
+	 * Creating user profile with ADMIN role
+	 *
+	 * @param registerRequest details for creating user
+	 * @return AuthenticationResponse/jwt token
+	 */
+	@Operation(
+			summary = "Create admin account",
+			description = "Create admin account for internal employees",
+			responses = {
+					@ApiResponse(responseCode = "201", description = "Admin account created successfully"),
+					@ApiResponse(responseCode = "400", description = Constants.EMAIL_ALREADY_EXIST),
+					@ApiResponse(responseCode = "500", description = Constants.INTERNAL_SERVER_ERROR)
+			}
+	)
+	@PreAuthorize("hasRole('ADMIN')")
+	@PostMapping("/register/admin")
+	public ResponseEntity<AuthenticationResponse> registerAdmin(@RequestBody RegisterRequest registerRequest){
+		AuthenticationResponse authenticationResponse = authenticationService.register(registerRequest, Constants.ADMIN);
+		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationResponse);
+	}
+
+	/**
 	 * Creating user profile with SELLER role
 	 *
 	 * @param registerRequest details for creating user
@@ -80,27 +103,6 @@ public class AuthenticationController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationResponse);
 	}
 
-
-	/**
-	 * Creating user profile with ADMIN role
-	 *
-	 * @param registerRequest details for creating user
-	 * @return AuthenticationResponse/jwt token
-	 */
-	@Operation(
-			summary = "Create admin account",
-			description = "Create admin account for internal employees",
-			responses = {
-					@ApiResponse(responseCode = "201", description = "Admin account created successfully"),
-					@ApiResponse(responseCode = "400", description = Constants.EMAIL_ALREADY_EXIST),
-					@ApiResponse(responseCode = "500", description = Constants.INTERNAL_SERVER_ERROR)
-			}
-	)
-	@PostMapping("/register/admin")
-	public ResponseEntity<AuthenticationResponse> registerAdmin(@RequestBody RegisterRequest registerRequest){
-		AuthenticationResponse authenticationResponse = authenticationService.register(registerRequest, Constants.ADMIN);
-		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationResponse);
-	}
 
 
 	/**

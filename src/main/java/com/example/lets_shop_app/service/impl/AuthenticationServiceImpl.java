@@ -1,13 +1,13 @@
 package com.example.lets_shop_app.service.impl;
 
 import com.example.lets_shop_app.constant.Constants;
-import com.example.lets_shop_app.entity.Authority;
+import com.example.lets_shop_app.dao.RoleRepository;
+import com.example.lets_shop_app.entity.Role;
 import com.example.lets_shop_app.service.AuthenticationService;
 import com.example.lets_shop_app.service.JwtService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +20,8 @@ import com.example.lets_shop_app.dto.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -39,10 +39,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	 * {@link AuthenticationManager}, {@link PasswordEncoder}
 	 * using constructor injection through lombok
 	 */
-	private final UserRepository userRepository;
-	private final JwtService jwtService;
 	private final AuthenticationManager authenticationManager;
+	private final JwtService jwtService;
 	private final PasswordEncoder passwordEncoder;
+	private final RoleRepository roleRepository;
+	private final UserRepository userRepository;
 
 
 	/**
@@ -54,7 +55,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	 */
 	@Override
 	public AuthenticationResponse register(RegisterRequest registerRequest, String authority) {
-		User user = createNewUser(registerRequest, authority);
+		User user = createNewUser(registerRequest, Constants.ROLE+authority);
 		
 		userRepository.save(user);		
 		String jwtToken = jwtService.generateToken(user);
@@ -91,17 +92,24 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	 */
 	private User createNewUser(RegisterRequest registerRequest, String authority){
 		User user = new User();
-		List<Authority> authorities = new ArrayList<>();
+		Set<Role> roles = new HashSet<>();
 
-		authorities.add(new Authority("ROLE_" + authority));
-		if(userRepository.count() == 0){
-			authorities.add(new Authority("ROLE_" + Constants.ADMIN));
-		}
+		Role role = roleRepository.findByName(authority).orElseThrow(
+				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, authority + " not found")
+		);
+
+		roles.add(role);
+//		if(userRepository.count() == 0){
+//			role = roleRepository.findByName(Constants.ROLE + Constants.ADMIN).orElseThrow(
+//					() -> new ResponseStatusException(HttpStatus.NOT_FOUND, Constants.ROLE + Constants.ADMIN + " not found")
+//			);
+//			roles.add(role);
+//		}
 
 		user.setFirstname(registerRequest.getFirstname());
 		user.setLastname(registerRequest.getLastname());
 		user.setEmail(registerRequest.getEmail());
-		user.setAuthorities(authorities);
+		user.setRoles(roles);
 		user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 		return user;
 	}

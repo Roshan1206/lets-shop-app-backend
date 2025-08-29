@@ -1,5 +1,6 @@
 package com.example.lets_shop_app.service;
 
+import com.example.lets_shop_app.dto.ProductDto;
 import com.example.lets_shop_app.dto.ProductSaveDto;
 import com.example.lets_shop_app.entity.Product;
 import org.springframework.data.domain.Page;
@@ -21,7 +22,7 @@ public interface ProductService {
      * @param pageable contains product page related data
      * @return Product page
      */
-    Page<Product> getProducts(Pageable pageable);
+    Page<ProductDto> getProducts(Pageable pageable, String name, String category);
 
 
     /**
@@ -30,7 +31,7 @@ public interface ProductService {
      * @param id product id
      * @return Product
      */
-    Product findByProductId(long id);
+    ProductDto getProduct(long id);
 
 
     /**
@@ -49,4 +50,8 @@ public interface ProductService {
      * @return Product id and name
      */
     List<ProductSaveDto> addAllProduct(List<Product> products);
+
+    List<ProductSaveDto> addProducts(List<String> products);
+
+    void addProductCategory(List<String> category);
 }

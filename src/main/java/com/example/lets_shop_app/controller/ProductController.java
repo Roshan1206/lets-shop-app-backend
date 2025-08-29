@@ -1,10 +1,11 @@
 package com.example.lets_shop_app.controller;
 
+import com.example.lets_shop_app.dto.ProductDto;
 import com.example.lets_shop_app.dto.ProductSaveDto;
 import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -25,12 +26,12 @@ import java.util.List;
 @Tag(name = "Product Endpoints", description = "Operational REST API endpoints related to Product")
 @RestController
 @RequestMapping("/products")
-@RequiredArgsConstructor
 public class ProductController {
 
     /**
      * Injecting {@link ProductService} in controller class
      */
+    @Autowired
     private ProductService productService;
 
 
@@ -44,14 +45,15 @@ public class ProductController {
      * @return Products
      */
     @GetMapping
-    public ResponseEntity<Page<Product>> getProducts(@RequestParam(defaultValue = "0") int page,
-                                                     @RequestParam(defaultValue = "20") int size,
-                                                     @RequestParam(defaultValue = "id") String sortBy,
-                                                     @RequestParam(defaultValue = "") String category,
-                                                     @RequestParam(defaultValue = "true") boolean asc){
+    public ResponseEntity<Page<ProductDto>> getProducts(@RequestParam(defaultValue = "0") int pageNumber,
+                                                        @RequestParam(defaultValue = "20") int pageSize,
+                                                        @RequestParam(defaultValue = "id") String sortBy,
+                                                        @RequestParam(defaultValue = "") String category,
+                                                        @RequestParam(defaultValue = "") String name,
+                                                        @RequestParam(defaultValue = "true") boolean asc){
         Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageable));
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageable, name, category));
     }
 
 
@@ -62,8 +64,8 @@ public class ProductController {
      * @return product
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getProductDetails(@PathVariable long id){
-        return ResponseEntity.status(HttpStatus.OK).body(productService.findByProductId(id));
+    public ResponseEntity<ProductDto> getProductDetails(@PathVariable long id){
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProduct(id));
     }
 
 

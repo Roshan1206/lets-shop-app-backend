@@ -1,5 +1,7 @@
 package com.example.lets_shop_app.config;
 
+import com.example.lets_shop_app.constant.Constants;
+import com.example.lets_shop_app.provider.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,18 +12,16 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.example.lets_shop_app.filter.JwtAuthenticationFilter;
-
-import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -54,16 +54,16 @@ public class JWTSecurityConfiguration {
 	/**
 	 * Provider responsible for authenticating users.
 	 */
-	private final AuthenticationProvider authenticationProvider;
+	private final CustomAuthenticationProvider authenticationProvider;
 
 
 	/**
-	 * Constructor for injecting {@link JwtAuthenticationFilter} and {@link AuthenticationProvider} dependency
+	 * Constructor for injecting {@link JwtAuthenticationFilter} and {@link CustomAuthenticationProvider} dependency
 	 *
 	 * @param jwtAuthenticationFilter filter used for JWT authentication
 	 * @param authenticationProvider provided by Spring security for authentication
 	 */
-	public JWTSecurityConfiguration(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationProvider authenticationProvider) {
+	public JWTSecurityConfiguration(JwtAuthenticationFilter jwtAuthenticationFilter, CustomAuthenticationProvider authenticationProvider) {
 		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
 		this.authenticationProvider = authenticationProvider;
 	}
@@ -114,6 +114,8 @@ public class JWTSecurityConfiguration {
 						req
 								.requestMatchers(SWAGGER_URLS).permitAll()
 								.requestMatchers(HttpMethod.GET, PRODUCTS_URLS).permitAll()
+								.requestMatchers(new AntPathRequestMatcher("/seller/**")).hasAnyRole(Constants.SELLER, Constants.ADMIN)
+								.requestMatchers(new AntPathRequestMatcher("/admin/**")).hasRole(Constants.ADMIN)
 								.requestMatchers("/auth/**", "/error").permitAll()
 								.anyRequest().authenticated())
 				.sessionManagement(session ->

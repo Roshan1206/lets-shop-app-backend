@@ -2,8 +2,6 @@ package com.example.lets_shop_app.util.impl;
 
 import com.example.lets_shop_app.dao.CartItemRepository;
 import com.example.lets_shop_app.dao.CartRepository;
-import com.example.lets_shop_app.dto.CartResponse;
-import com.example.lets_shop_app.entity.Cart;
 import com.example.lets_shop_app.entity.CartItem;
 import com.example.lets_shop_app.util.CartUtil;
 import org.springframework.http.HttpStatus;
@@ -28,11 +26,6 @@ public class CartUtilImpl implements CartUtil {
         return cartItemRepository.findById(cartId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Cart not found")
         );
-    }
-
-    @Override
-    public CartResponse converToCartResponse(CartItem cartItem) {
-        return new CartResponse(cartItem.getId(), cartItem.getProduct(), cartItem.getTotalPrice(), cartItem.getProductQuantity());
     }
 
     @Override

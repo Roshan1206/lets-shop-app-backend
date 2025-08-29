@@ -2,7 +2,6 @@ package com.example.lets_shop_app.service.impl;
 
 import com.example.lets_shop_app.dao.UserRepository;
 import com.example.lets_shop_app.dto.UserInfoResponseDto;
-import com.example.lets_shop_app.entity.Authority;
 import com.example.lets_shop_app.entity.User;
 import com.example.lets_shop_app.service.UserService;
 import com.example.lets_shop_app.util.UserUtil;

@@ -2,8 +2,7 @@ package com.example.lets_shop_app.entity;
 
 
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -11,6 +10,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
@@ -44,12 +44,13 @@ public class User implements UserDetails {
 	private String password;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
-	private List<Authority> authorities;
+	@CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+	private Set<Role> roles;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
+		return roles.stream().map(role ->
+				new SimpleGrantedAuthority(role.getName())).toList();
 	}
 
 	@Override

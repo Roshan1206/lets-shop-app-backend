@@ -29,7 +29,7 @@ public class SwaggerConfiguration {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("Lets Shop")
+                                .title("Lets Shop App")
                                 .description("Lets shop app documentation")
                                 .version("v1"))
                 .components(

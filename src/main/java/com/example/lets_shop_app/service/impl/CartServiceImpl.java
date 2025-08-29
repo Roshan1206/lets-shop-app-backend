@@ -7,6 +7,7 @@ import java.util.Optional;
 import com.example.lets_shop_app.dao.CartItemRepository;
 import com.example.lets_shop_app.entity.CartItem;
 import com.example.lets_shop_app.entity.Product;
+import com.example.lets_shop_app.mapper.CartMapper;
 import com.example.lets_shop_app.service.CartService;
 import com.example.lets_shop_app.util.CartUtil;
 import com.example.lets_shop_app.util.ProductUtil;
@@ -60,7 +61,7 @@ public class CartServiceImpl implements CartService {
 		cartItem.setProductQuantity(cartRequest.getProductQuantity());
 
 		CartItem savedCartItem = cartItemRepository.save(cartItem);
-		return cartUtil.converToCartResponse(savedCartItem);
+		return CartMapper.mapToCartResponse(savedCartItem);
 	}
 
 	/**
@@ -120,6 +121,6 @@ public class CartServiceImpl implements CartService {
 	public List<CartResponse> getCart() {
 		Optional<List<CartItem>> cartItems = cartItemRepository.findAllByUserId(userUtil.getUserId());
 
-        return cartItems.map(items -> items.stream().map(cartUtil::converToCartResponse).toList()).orElseGet(List::of);
+        return cartItems.map(items -> items.stream().map(CartMapper::mapToCartResponse).toList()).orElseGet(List::of);
     }
 }

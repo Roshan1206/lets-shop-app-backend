@@ -79,7 +79,7 @@ public class CartController {
 	 *
 	 * @param cartId cart id
 	 */
-	@PostMapping("/{cartId}/decrement")
+	@PutMapping("/{cartId}/decrement")
 	public ResponseEntity<CartResponse> decrementCartItemQuantity(@PathVariable long cartId){
 		cartService.incrementCartItem(cartId);
 		return ResponseEntity.ok().build();

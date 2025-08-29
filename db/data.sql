@@ -352,6 +352,3 @@
 --INSERT INTO `lets-shop-practice`.product (`id`,`name`,`description`,`price`,`stock`,`brand`,`category`,`thumbnail`) VALUES (98,'American Vintage Wood Pendant Light','American Vintage Wood Pendant Light Farmhouse Antique Hanging Lamp Lampara Colgante',46,138,'Ifei Home',20,'https://cdn.dummyjson.com/product-images/99/thumbnail.jpg');
 --INSERT INTO `lets-shop-practice`.product (`id`,`name`,`description`,`price`,`stock`,`brand`,`category`,`thumbnail`) VALUES (99,'Crystal chandelier maria theresa for 12 light','Crystal chandelier maria theresa for 12 light',47,133,'YIOSI',20,'https://cdn.dummyjson.com/product-images/100/thumbnail.jpg');
 --INSERT INTO `lets-shop-practice`.product (`id`,`name`,`description`,`price`,`stock`,`brand`,`category`,`thumbnail`) VALUES (100,'sublimation plain kids tank','sublimation plain kids tank tops wholesale',100,20,'Soft Cotton',8,'https://cdn.dummyjson.com/product-images/38/thumbnail.jpg');
---
---
---
