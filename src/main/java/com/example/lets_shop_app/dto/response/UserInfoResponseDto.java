@@ -1,12 +1,9 @@
-package com.example.lets_shop_app.dto;
+package com.example.lets_shop_app.dto.response;
 
-import com.example.lets_shop_app.entity.Authority;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Getter
 @Setter

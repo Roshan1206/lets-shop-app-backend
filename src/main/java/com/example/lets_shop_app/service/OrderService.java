@@ -1,6 +1,6 @@
 package com.example.lets_shop_app.service;
 
-import com.example.lets_shop_app.dto.OrderUserResponse;
+import com.example.lets_shop_app.dto.response.OrderUserResponse;
 
 import java.util.List;
 

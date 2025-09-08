@@ -1,4 +1,4 @@
-package com.example.lets_shop_app.dto;
+package com.example.lets_shop_app.dto.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

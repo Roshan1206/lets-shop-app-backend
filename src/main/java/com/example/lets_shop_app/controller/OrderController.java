@@ -7,9 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.lets_shop_app.dto.OrderUserResponse;
-
-import lombok.RequiredArgsConstructor;
+import com.example.lets_shop_app.dto.response.OrderUserResponse;
 
 
 /**
@@ -26,9 +24,12 @@ public class OrderController {
 	/**
 	 * Injecting {@link OrderService}
 	 */
-	private OrderService orderService;
+	private final OrderService orderService;
 
 
+	/**
+	 * Injecting required dependency for this controller class
+	 */
 	public OrderController(OrderService orderService){
 		this.orderService = orderService;
 	}

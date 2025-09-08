@@ -1,11 +1,11 @@
 package com.example.lets_shop_app.controller;
 
-import com.example.lets_shop_app.dto.ProductDto;
-import com.example.lets_shop_app.dto.ProductSaveDto;
+import com.example.lets_shop_app.dto.response.ProductResponse;
+import com.example.lets_shop_app.dto.response.ProductSaveResponse;
 import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.service.ProductService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.constraints.Min;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,31 +29,38 @@ import java.util.List;
 public class ProductController {
 
     /**
-     * Injecting {@link ProductService} in controller class
+     * Service class for performing operations
      */
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
+
+
+    /**
+     * Injecting required dependency for this class
+     */
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
 
     /**
      * Get list of all products from db
      *
-     * @param page page no
-     * @param size items size
+     * @param pageNumber page no
+     * @param pageSize items size
      * @param sortBy sorting category
      * @param asc sorting order
      * @return Products
      */
     @GetMapping
-    public ResponseEntity<Page<ProductDto>> getProducts(@RequestParam(defaultValue = "0") int pageNumber,
-                                                        @RequestParam(defaultValue = "20") int pageSize,
-                                                        @RequestParam(defaultValue = "id") String sortBy,
-                                                        @RequestParam(defaultValue = "") String category,
-                                                        @RequestParam(defaultValue = "") String name,
-                                                        @RequestParam(defaultValue = "true") boolean asc){
+    public ResponseEntity<Page<ProductResponse>> getProducts(@RequestParam(defaultValue = "0") @Min(0) int pageNumber,
+                                                             @RequestParam(defaultValue = "20") @Min(1) int pageSize,
+                                                             @RequestParam(defaultValue = "id") String sortBy,
+                                                             @RequestParam(defaultValue = "") List<String> categories,
+                                                             @RequestParam(defaultValue = "") String name,
+                                                             @RequestParam(defaultValue = "true") boolean asc){
         Sort sort = asc ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageable, name, category));
+        return ResponseEntity.status(HttpStatus.OK).body(productService.getProducts(pageable, name, categories));
     }
 
 
@@ -64,7 +71,7 @@ public class ProductController {
      * @return product
      */
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> getProductDetails(@PathVariable long id){
+    public ResponseEntity<ProductResponse> getProductDetails(@PathVariable long id){
         return ResponseEntity.status(HttpStatus.OK).body(productService.getProduct(id));
     }
 
@@ -78,7 +85,7 @@ public class ProductController {
      */
     @PreAuthorize("hasRole('SELLER')")
     @PostMapping
-    public ResponseEntity<ProductSaveDto> addProduct(@RequestBody Product product){
+    public ResponseEntity<ProductSaveResponse> addProduct(@RequestBody Product product){
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.addProduct(product));
     }
 
@@ -92,7 +99,7 @@ public class ProductController {
      */
     @PreAuthorize("hasRole('SELLER')")
     @PostMapping("/add-all")
-    public ResponseEntity<List<ProductSaveDto>> addAllProduct(@RequestBody List<Product> products){
+    public ResponseEntity<List<ProductSaveResponse>> addAllProduct(@RequestBody List<Product> products){
         return ResponseEntity.status(HttpStatus.CREATED).body(productService.addAllProduct(products));
     }
 }

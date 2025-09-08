@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.lets_shop_app.entity.State;
-import com.example.lets_shop_app.dto.CountryResponse;
+import com.example.lets_shop_app.dto.response.CountryResponse;
 
 import lombok.RequiredArgsConstructor;
 

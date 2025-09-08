@@ -1,9 +1,8 @@
 package com.example.lets_shop_app.mapper;
 
-import com.example.lets_shop_app.dto.ProductDto;
+import com.example.lets_shop_app.dto.response.ProductResponse;
 import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.entity.ProductCategory;
-import org.springframework.data.domain.Page;
 
 import java.math.BigDecimal;
 
@@ -21,16 +20,16 @@ public class ProductMapper {
         return product;
     }
 
-    public static ProductDto mapToProductDto(Product product){
-        ProductDto productDto = new ProductDto();
-        productDto.setId(product.getId());
-        productDto.setName(product.getName());
-        productDto.setDescription(product.getDescription());
-        productDto.setThumbnail(product.getThumbnail());
-        productDto.setPrice(product.getPrice());
-        productDto.setBrand(product.getBrand());
-        productDto.setStock(product.getStock());
-        productDto.setCategory(product.getCategory().getProductCategory());
-        return productDto;
+    public static ProductResponse mapToProductResponse(Product product){
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setId(product.getId());
+        productResponse.setName(product.getName());
+        productResponse.setDescription(product.getDescription());
+        productResponse.setThumbnail(product.getThumbnail());
+        productResponse.setPrice(product.getPrice());
+        productResponse.setBrand(product.getBrand());
+        productResponse.setStock(product.getStock());
+        productResponse.setCategory(product.getCategory().getProductCategory());
+        return productResponse;
     }
 }

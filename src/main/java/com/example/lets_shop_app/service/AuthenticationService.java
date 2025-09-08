@@ -1,8 +1,9 @@
 package com.example.lets_shop_app.service;
 
-import com.example.lets_shop_app.dto.AuthenticateRequest;
-import com.example.lets_shop_app.dto.AuthenticationResponse;
-import com.example.lets_shop_app.dto.RegisterRequest;
+import com.example.lets_shop_app.dto.request.AuthenticateRequest;
+import com.example.lets_shop_app.dto.response.UserLoginResponse;
+import com.example.lets_shop_app.dto.request.RegisterRequest;
+import com.example.lets_shop_app.dto.response.UserSignUpResponse;
 
 /**
  * Defining methods for authentication related services.
@@ -19,7 +20,7 @@ public interface AuthenticationService {
      * @param authority user role
      * @return jwt token
      */
-    AuthenticationResponse register(RegisterRequest registerRequest, String authority);
+    UserSignUpResponse register(RegisterRequest registerRequest, String authority);
 
 
     /**
@@ -28,5 +29,5 @@ public interface AuthenticationService {
      * @param authenticateRequest user credentials.
      * @return jwt token
      */
-    AuthenticationResponse authenticate(AuthenticateRequest authenticateRequest);
+    UserLoginResponse authenticate(AuthenticateRequest authenticateRequest);
 }

@@ -1,6 +1,6 @@
 package com.example.lets_shop_app.controller;
 
-import com.example.lets_shop_app.dto.ProductSaveDto;
+import com.example.lets_shop_app.dto.response.ProductSaveResponse;
 import com.example.lets_shop_app.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,17 +19,31 @@ import java.util.List;
 @RequestMapping("/seller")
 public class SellerController {
 
-    @Autowired
-    private SellerService sellerService;
+    /**
+     * Service class for Seller
+     */
+    private final SellerService sellerService;
 
+
+    /**
+     * Injecting required dependency
+     */
+    public SellerController(SellerService sellerService) {
+        this.sellerService = sellerService;
+    }
+
+
+    /**
+     * Adding products from csv file
+     */
     @PostMapping("/addProducts")
-    public ResponseEntity<List<ProductSaveDto>> createNewProductsFromFile(@RequestParam("file") MultipartFile file){
+    public ResponseEntity<List<ProductSaveResponse>> createNewProductsFromFile(@RequestParam("file") MultipartFile file){
         String fileName = file.getOriginalFilename();
-        if (fileName.substring(fileName.lastIndexOf(".")) != "csv"){
+        if ("csv".equals(fileName.substring(fileName.lastIndexOf(".")))){
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "File type not supported. Kindly use .csv file");
         }
         File newFile = new File(fileName);
-        List<ProductSaveDto> products = sellerService.addProducts(newFile);
+        List<ProductSaveResponse> products = sellerService.addProducts(newFile);
         return ResponseEntity.status(HttpStatus.CREATED).body(products);
     }
 }

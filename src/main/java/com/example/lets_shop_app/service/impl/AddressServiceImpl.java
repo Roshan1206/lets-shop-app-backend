@@ -6,13 +6,11 @@ import java.util.List;
 import com.example.lets_shop_app.service.AddressService;
 import org.springframework.stereotype.Service;
 
-import com.example.lets_shop_app.dao.CountryRepository;
-import com.example.lets_shop_app.dao.StateRepository;
+import com.example.lets_shop_app.repository.CountryRepository;
+import com.example.lets_shop_app.repository.StateRepository;
 import com.example.lets_shop_app.entity.Country;
 import com.example.lets_shop_app.entity.State;
-import com.example.lets_shop_app.dto.CountryResponse;
-
-import lombok.RequiredArgsConstructor;
+import com.example.lets_shop_app.dto.response.CountryResponse;
 
 
 /**

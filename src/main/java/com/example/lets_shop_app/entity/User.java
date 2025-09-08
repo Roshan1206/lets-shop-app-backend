@@ -6,7 +6,9 @@ import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,22 +26,26 @@ public class User implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
+	@Column(name = "user_id")
 	private long id;
 
-	@NotEmpty(message = "First name cannot be empty")
-	@Size(min = 3, max = 10, message = "First name should be in between 3 to 10 characters long")
+	@NotBlank(message = "First name cannot be empty")
+	@Size(min = 3, max = 10, message = "First name should be in between 3 to 10 characters")
 	@Column(name = "first_name")
 	private String firstname;
-	
+
+	@NotBlank(message = "Last name cannot be empty")
+	@Size(min = 3, max = 10, message = "Last name should be in between 3 to 10 characters")
 	@Column(name = "last_name")
 	private String lastname;
 
-	@NotEmpty
+	@NotBlank(message = "Email cannot be empty")
 	@Column(name = "email", nullable = false, unique = true)
 	private String email;
-	
-	@Column(name = "password")
+
+	@NotBlank(message = "Password cannot be empty")
+	@Pattern(regexp = "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*_+-=]).{8,}$")
+	@Column(name = "password", nullable = false)
 	@JsonIgnore
 	private String password;
 

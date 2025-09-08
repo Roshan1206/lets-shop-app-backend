@@ -1,9 +1,8 @@
 package com.example.lets_shop_app.util.impl;
 
-import com.example.lets_shop_app.dao.UserRepository;
+import com.example.lets_shop_app.repository.UserRepository;
 import com.example.lets_shop_app.entity.User;
 import com.example.lets_shop_app.util.UserUtil;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

@@ -1,10 +1,5 @@
-package com.example.lets_shop_app.dto;
+package com.example.lets_shop_app.dto.response;
 
-import com.example.lets_shop_app.entity.ProductCategory;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +9,7 @@ import java.math.BigDecimal;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDto {
+public class ProductResponse {
 
     private long id;
     private String name;

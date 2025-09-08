@@ -1,6 +1,6 @@
 package com.example.lets_shop_app.exception;
 
-import com.example.lets_shop_app.dto.ErrorResponseDto;
+import com.example.lets_shop_app.dto.response.ErrorResponseDto;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

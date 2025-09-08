@@ -1,6 +1,7 @@
 package com.example.lets_shop_app.controller;
 
 import com.example.lets_shop_app.constant.Constants;
+import com.example.lets_shop_app.dto.response.UserSignUpResponse;
 import com.example.lets_shop_app.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -13,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.lets_shop_app.dto.AuthenticateRequest;
-import com.example.lets_shop_app.dto.AuthenticationResponse;
-import com.example.lets_shop_app.dto.RegisterRequest;
+import com.example.lets_shop_app.dto.request.AuthenticateRequest;
+import com.example.lets_shop_app.dto.response.UserLoginResponse;
+import com.example.lets_shop_app.dto.request.RegisterRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,15 +28,22 @@ import lombok.RequiredArgsConstructor;
  */
 @Tag(name = "Authentication Endpoints", description = "Operational REST API endpoints related to Authentication")
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthenticationController {
 
 
 	/**
-	 * Injecting Service class for authentication operations using lombok
+	 * Service class for authentication operations
 	 */
 	private final AuthenticationService authenticationService;
+
+
+	/**
+	 * Injecting dependency using Constructor injection
+	 */
+	public AuthenticationController(AuthenticationService authenticationService) {
+		this.authenticationService = authenticationService;
+	}
 
 	/**
 	 * Creating user profile with USER role
@@ -54,9 +62,9 @@ public class AuthenticationController {
 			}
 	)
 	@PostMapping("/register/user")
-	public ResponseEntity<AuthenticationResponse> registerUser(@RequestBody RegisterRequest registerRequest){
-		AuthenticationResponse authenticationResponse = authenticationService.register(registerRequest, Constants.USER);
-		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationResponse);
+	public ResponseEntity<UserSignUpResponse> registerUser(@RequestBody RegisterRequest registerRequest){
+		UserSignUpResponse response = authenticationService.register(registerRequest, Constants.USER);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 
@@ -77,9 +85,9 @@ public class AuthenticationController {
 	)
 	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping("/register/admin")
-	public ResponseEntity<AuthenticationResponse> registerAdmin(@RequestBody RegisterRequest registerRequest){
-		AuthenticationResponse authenticationResponse = authenticationService.register(registerRequest, Constants.ADMIN);
-		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationResponse);
+	public ResponseEntity<UserSignUpResponse> registerAdmin(@RequestBody RegisterRequest registerRequest){
+		UserSignUpResponse response = authenticationService.register(registerRequest, Constants.ADMIN);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 	/**
@@ -98,9 +106,9 @@ public class AuthenticationController {
 			}
 	)
 	@PostMapping("/register/seller")
-	public ResponseEntity<AuthenticationResponse> registerSeller(@RequestBody RegisterRequest registerRequest){
-		AuthenticationResponse authenticationResponse = authenticationService.register(registerRequest, Constants.SELLER);
-		return ResponseEntity.status(HttpStatus.CREATED).body(authenticationResponse);
+	public ResponseEntity<UserSignUpResponse> registerSeller(@RequestBody RegisterRequest registerRequest){
+		UserSignUpResponse response = authenticationService.register(registerRequest, Constants.SELLER);
+		return ResponseEntity.status(HttpStatus.CREATED).body(response);
 	}
 
 
@@ -121,9 +129,9 @@ public class AuthenticationController {
 			}
 	)
 	@PostMapping("/login")
-	public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticateRequest authenticateRequest){
-		AuthenticationResponse authenticationResponse = authenticationService.authenticate(authenticateRequest);
-		return ResponseEntity.status(HttpStatus.OK).body(authenticationResponse);
+	public ResponseEntity<UserLoginResponse> authenticate(@RequestBody AuthenticateRequest authenticateRequest){
+		UserLoginResponse userLoginResponse = authenticationService.authenticate(authenticateRequest);
+		return ResponseEntity.status(HttpStatus.OK).body(userLoginResponse);
 	}
 
 }

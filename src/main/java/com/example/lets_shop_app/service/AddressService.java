@@ -1,6 +1,6 @@
 package com.example.lets_shop_app.service;
 
-import com.example.lets_shop_app.dto.CountryResponse;
+import com.example.lets_shop_app.dto.response.CountryResponse;
 import com.example.lets_shop_app.entity.State;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.example.lets_shop_app.util.impl;
 
-import com.example.lets_shop_app.dao.ProductRepository;
+import com.example.lets_shop_app.repository.ProductRepository;
 import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.util.ProductUtil;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.lets_shop_app.dao;
+package com.example.lets_shop_app.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

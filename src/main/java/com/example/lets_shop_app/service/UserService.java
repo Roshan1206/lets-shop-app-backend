@@ -1,6 +1,7 @@
 package com.example.lets_shop_app.service;
 
-import com.example.lets_shop_app.dto.UserInfoResponseDto;
+import com.example.lets_shop_app.dto.request.UpdatePasswordRequest;
+import com.example.lets_shop_app.dto.response.UserInfoResponseDto;
 
 
 /**
@@ -17,6 +18,13 @@ public interface UserService {
      * @return User info
      */
     UserInfoResponseDto getUserInfo();
+
+
+    /**
+     * Update password for current authenticated user
+     * @param request passwords
+     */
+    void updatePassword(UpdatePasswordRequest request);
 
 
     /**

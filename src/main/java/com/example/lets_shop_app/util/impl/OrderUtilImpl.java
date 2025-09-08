@@ -1,6 +1,6 @@
 package com.example.lets_shop_app.util.impl;
 
-import com.example.lets_shop_app.dto.OrderUserResponse;
+import com.example.lets_shop_app.dto.response.OrderUserResponse;
 import com.example.lets_shop_app.entity.Order;
 import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.util.OrderUtil;

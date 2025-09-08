@@ -1,7 +1,7 @@
 package com.example.lets_shop_app.service;
 
-import com.example.lets_shop_app.dto.CartResponse;
-import com.example.lets_shop_app.dto.CartRequest;
+import com.example.lets_shop_app.dto.response.CartResponse;
+import com.example.lets_shop_app.dto.request.CartRequest;
 
 import java.util.List;
 

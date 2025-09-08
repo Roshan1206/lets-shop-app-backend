@@ -1,11 +1,13 @@
 package com.example.lets_shop_app.service.impl;
 
-import com.example.lets_shop_app.dao.UserRepository;
-import com.example.lets_shop_app.dto.UserInfoResponseDto;
+import com.example.lets_shop_app.dto.request.UpdatePasswordRequest;
+import com.example.lets_shop_app.repository.UserRepository;
+import com.example.lets_shop_app.dto.response.UserInfoResponseDto;
 import com.example.lets_shop_app.entity.User;
 import com.example.lets_shop_app.service.UserService;
 import com.example.lets_shop_app.util.UserUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 
@@ -15,15 +17,32 @@ import org.springframework.stereotype.Service;
  * @author Roshan
  */
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
 
     /**
-     * Injecting {@link UserRepository} and {@link UserUtil}
+     * Repository responsible for managing users
      */
     private final UserRepository userRepository;
+
+
+    /**
+     * Utility class for user
+     */
     private final UserUtil userUtil;
+
+
+    /**
+     * For encoding password
+     */
+    private final PasswordEncoder passwordEncoder;
+
+
+    public UserServiceImpl(PasswordEncoder passwordEncoder, UserRepository userRepository, UserUtil userUtil) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.userUtil = userUtil;
+    }
 
 
     /**
@@ -42,6 +61,18 @@ public class UserServiceImpl implements UserService {
         return userInfoResponseDto;
     }
 
+    /**
+     * Update password for current authenticated user
+     *
+     * @param request passwords
+     */
+    @Override
+    public void updatePassword(UpdatePasswordRequest request) {
+        String savedPassword = userUtil.getAuthenticatedUser().getPassword();
+
+
+    }
+
 
     /**
      * Delete authenticated user
@@ -51,4 +82,7 @@ public class UserServiceImpl implements UserService {
         User user = userUtil.getAuthenticatedUser();
         userRepository.delete(user);
     }
+
+
+//    private boolean isCurrentPasswordMatching(String current, String saved)
 }

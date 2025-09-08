@@ -11,10 +11,10 @@ import com.example.lets_shop_app.util.UserUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.example.lets_shop_app.dao.OrderRepository;
-import com.example.lets_shop_app.dao.ProductRepository;
+import com.example.lets_shop_app.repository.OrderRepository;
+import com.example.lets_shop_app.repository.ProductRepository;
 import com.example.lets_shop_app.entity.Order;
-import com.example.lets_shop_app.dto.OrderUserResponse;
+import com.example.lets_shop_app.dto.response.OrderUserResponse;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.server.ResponseStatusException;

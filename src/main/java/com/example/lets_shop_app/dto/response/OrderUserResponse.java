@@ -1,8 +1,7 @@
-package com.example.lets_shop_app.dto;
+package com.example.lets_shop_app.dto.response;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

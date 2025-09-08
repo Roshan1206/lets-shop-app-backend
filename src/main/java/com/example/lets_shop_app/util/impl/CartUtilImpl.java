@@ -1,7 +1,7 @@
 package com.example.lets_shop_app.util.impl;
 
-import com.example.lets_shop_app.dao.CartItemRepository;
-import com.example.lets_shop_app.dao.CartRepository;
+import com.example.lets_shop_app.repository.CartItemRepository;
+import com.example.lets_shop_app.repository.CartRepository;
 import com.example.lets_shop_app.entity.CartItem;
 import com.example.lets_shop_app.util.CartUtil;
 import org.springframework.http.HttpStatus;

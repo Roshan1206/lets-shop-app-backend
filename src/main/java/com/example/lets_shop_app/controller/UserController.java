@@ -1,7 +1,8 @@
 package com.example.lets_shop_app.controller;
 
 import com.example.lets_shop_app.constant.Constants;
-import com.example.lets_shop_app.dto.UserInfoResponseDto;
+import com.example.lets_shop_app.dto.request.UpdatePasswordRequest;
+import com.example.lets_shop_app.dto.response.UserInfoResponseDto;
 import com.example.lets_shop_app.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -14,10 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "User Endpoints", description = "Operational REST API endpoints related to User")
 @RestController
 @RequestMapping("/user")
-@RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+
+
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @Operation(
             summary = "User Info",
@@ -30,8 +35,13 @@ public class UserController {
     )
     @GetMapping("/info")
     @ResponseStatus(HttpStatus.OK)
-    public UserInfoResponseDto getUserInfo(){
-        return userService.getUserInfo();
+    public ResponseEntity<UserInfoResponseDto> getUserInfo(){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserInfo());
+    }
+
+
+    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest passwordRequest) {
+
     }
 
 
@@ -47,6 +57,6 @@ public class UserController {
     @DeleteMapping
     public ResponseEntity<String> deleteUser(){
         userService.deleteUser();
-        return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User deleted successfully");
     }
 }

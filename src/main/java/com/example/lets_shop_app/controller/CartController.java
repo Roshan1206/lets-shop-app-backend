@@ -8,10 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.lets_shop_app.entity.Cart;
-import com.example.lets_shop_app.dto.CartResponse;
-import com.example.lets_shop_app.dto.CartRequest;
-import com.example.lets_shop_app.dto.CartResponse;
+import com.example.lets_shop_app.dto.response.CartResponse;
+import com.example.lets_shop_app.dto.request.CartRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -56,7 +54,6 @@ public class CartController {
 	 */
 	@PostMapping
 	public ResponseEntity<CartResponse> addToCart(@RequestBody CartRequest cart){
-		System.out.println(cart);
 		CartResponse cartItemsResponse = cartService.addToCart(cart);
 		return ResponseEntity.status(HttpStatus.CREATED).body(cartItemsResponse);
 	}
@@ -69,7 +66,7 @@ public class CartController {
 	 */
 	@PutMapping("/{cartId}/increment")
 	public ResponseEntity<CartResponse> incrementCartItemQuantity(@PathVariable long cartId){
-		cartService.decrementCartItem(cartId);
+		cartService.incrementCartItem(cartId);
 		return ResponseEntity.ok().build();
 	}
 
@@ -81,7 +78,7 @@ public class CartController {
 	 */
 	@PutMapping("/{cartId}/decrement")
 	public ResponseEntity<CartResponse> decrementCartItemQuantity(@PathVariable long cartId){
-		cartService.incrementCartItem(cartId);
+		cartService.decrementCartItem(cartId);
 		return ResponseEntity.ok().build();
 	}
 

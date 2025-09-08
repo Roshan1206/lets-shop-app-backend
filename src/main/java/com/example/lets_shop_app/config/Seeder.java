@@ -1,12 +1,11 @@
 package com.example.lets_shop_app.config;
 
 import com.example.lets_shop_app.constant.Constants;
-import com.example.lets_shop_app.dao.RoleRepository;
-import com.example.lets_shop_app.dto.RegisterRequest;
+import com.example.lets_shop_app.repository.RoleRepository;
+import com.example.lets_shop_app.dto.request.RegisterRequest;
 import com.example.lets_shop_app.entity.Role;
 import com.example.lets_shop_app.service.AuthenticationService;
 import com.example.lets_shop_app.service.ProductService;
-import com.example.lets_shop_app.service.SellerService;
 import com.example.lets_shop_app.util.FileHandlerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
-import com.example.lets_shop_app.dao.CartItemRepository;
+import com.example.lets_shop_app.repository.CartItemRepository;
 import com.example.lets_shop_app.entity.CartItem;
 import com.example.lets_shop_app.entity.Product;
 import com.example.lets_shop_app.mapper.CartMapper;
@@ -14,10 +14,10 @@ import com.example.lets_shop_app.util.ProductUtil;
 import com.example.lets_shop_app.util.UserUtil;
 import org.springframework.stereotype.Service;
 
-import com.example.lets_shop_app.dao.CartRepository;
+import com.example.lets_shop_app.repository.CartRepository;
 import com.example.lets_shop_app.entity.Cart;
-import com.example.lets_shop_app.dto.CartResponse;
-import com.example.lets_shop_app.dto.CartRequest;
+import com.example.lets_shop_app.dto.response.CartResponse;
+import com.example.lets_shop_app.dto.request.CartRequest;
 
 import lombok.RequiredArgsConstructor;
 

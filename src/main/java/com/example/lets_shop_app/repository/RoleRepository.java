@@ -1,4 +1,4 @@
-package com.example.lets_shop_app.dao;
+package com.example.lets_shop_app.repository;
 
 import com.example.lets_shop_app.entity.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
