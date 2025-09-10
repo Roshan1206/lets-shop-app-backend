@@ -10,6 +10,8 @@ import com.example.lets_shop_app.util.FileHandlerUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,11 +21,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 
 @Component
 @Slf4j
-public class Seeder implements CommandLineRunner {
+public class Seeder {
 
     @Autowired
     private AuthenticationService authenticationService;
@@ -43,8 +46,8 @@ public class Seeder implements CommandLineRunner {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Override
-    public void run(String... args) throws Exception {
+    @EventListener(ApplicationReadyEvent.class)
+    public void addData() throws FileNotFoundException {
         List<String> roles = List.of(Constants.ROLE+Constants.USER, Constants.ROLE+Constants.SELLER, Constants.ROLE+Constants.ADMIN);
 
         roles.forEach(role -> roleRepository.findByName(role).orElseGet(

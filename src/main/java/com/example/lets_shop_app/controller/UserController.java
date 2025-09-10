@@ -2,9 +2,12 @@ package com.example.lets_shop_app.controller;
 
 import com.example.lets_shop_app.constant.Constants;
 import com.example.lets_shop_app.dto.request.UpdatePasswordRequest;
+import com.example.lets_shop_app.dto.response.ErrorResponseDto;
 import com.example.lets_shop_app.dto.response.UserInfoResponseDto;
 import com.example.lets_shop_app.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,8 +32,12 @@ public class UserController {
             description = "Get information for authenticated user",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successful retrieval of user info"),
-                    @ApiResponse(responseCode = "404", description = Constants.USER_NOT_FOUND),
-                    @ApiResponse(responseCode = "500", description = Constants.INTERNAL_SERVER_ERROR)
+                    @ApiResponse(responseCode = "400", description = Constants.BAD_REQUEST,
+                            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = Constants.USER_NOT_FOUND,
+                            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "500", description = Constants.INTERNAL_SERVER_ERROR,
+                            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
             }
     )
     @GetMapping("/info")
@@ -40,8 +47,23 @@ public class UserController {
     }
 
 
+    @Operation(
+            summary = "Update user password",
+            description = "Update authenticated user password",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Password updated successfully"),
+                    @ApiResponse(responseCode = "400", description = Constants.BAD_REQUEST,
+                            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = Constants.USER_NOT_FOUND,
+                            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "500", description = Constants.INTERNAL_SERVER_ERROR,
+                            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
+            }
+    )
+    @PutMapping("/update-password")
     public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest passwordRequest) {
-
+        userService.updatePassword(passwordRequest);
+        return ResponseEntity.status(HttpStatus.OK).body("Password updated successfully");
     }
 
 
@@ -50,13 +72,17 @@ public class UserController {
             description = "Delete authenticated user",
             responses = {
                     @ApiResponse(responseCode = "200", description = "User deleted successfully"),
-                    @ApiResponse(responseCode = "404", description = Constants.USER_NOT_FOUND),
-                    @ApiResponse(responseCode = "500", description = Constants.INTERNAL_SERVER_ERROR)
+                    @ApiResponse(responseCode = "400", description = Constants.BAD_REQUEST,
+                            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "404", description = Constants.USER_NOT_FOUND,
+                            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class))),
+                    @ApiResponse(responseCode = "500", description = Constants.INTERNAL_SERVER_ERROR,
+                            content = @Content(schema = @Schema(implementation = ErrorResponseDto.class)))
             }
     )
     @DeleteMapping
     public ResponseEntity<String> deleteUser(){
         userService.deleteUser();
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("User deleted successfully");
+        return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully");
     }
 }
